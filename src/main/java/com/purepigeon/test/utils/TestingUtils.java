@@ -23,12 +23,12 @@ import java.util.Objects;
 /**
  * <p>
  *     Provides various testing utilities, including:
- *     <ul>
- *         <li>Loading input / expected test resources as objects or strings in an organized fashion</li>
- *         <li>Asserting on test results using expected artifacts from test resources</li>
- *         <li>Converting JSON strings to objects</li>
- *     </ul>
  * </p>
+ * <ul>
+ *     <li>Loading input / expected test resources as objects or strings in an organized fashion</li>
+ *     <li>Asserting on test results using expected artifacts from test resources</li>
+ *     <li>Converting JSON strings to objects</li>
+ * </ul>
  */
 @TestComponent
 @RequiredArgsConstructor
@@ -167,15 +167,15 @@ public class TestingUtils {
      * </p>
      * <p>
      *     Prefer using the more streamlined variants:
-     *     <ul>
-     *         <li>{@link TestingUtils#readInputObject(String, Class)}</li>
-     *         <li>{@link TestingUtils#readInputObject(String, String, Class)}</li>
-     *         <li>{@link TestingUtils#readInputObject(String, String, String, Class)}</li>
-     *         <li>{@link TestingUtils#readExpectedObject(String, Class)}</li>
-     *         <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
-     *         <li>{@link TestingUtils#readExpectedObject(String, String, String, Class)}</li>
-     *     </ul>
      * </p>
+     * <ul>
+     *     <li>{@link TestingUtils#readInputObject(String, Class)}</li>
+     *     <li>{@link TestingUtils#readInputObject(String, String, Class)}</li>
+     *     <li>{@link TestingUtils#readInputObject(String, String, String, Class)}</li>
+     *     <li>{@link TestingUtils#readExpectedObject(String, Class)}</li>
+     *     <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
+     *     <li>{@link TestingUtils#readExpectedObject(String, String, String, Class)}</li>
+     * </ul>
      * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactType the artifact type
@@ -324,15 +324,15 @@ public class TestingUtils {
      * </p>
      * <p>
      *     Prefer using the more streamlined variants:
-     *     <ul>
-     *         <li>{@link TestingUtils#readInputString(String, Class)}</li>
-     *         <li>{@link TestingUtils#readInputString(String, String, Class)}</li>
-     *         <li>{@link TestingUtils#readInputString(String, String, String)}</li>
-     *         <li>{@link TestingUtils#readExpectedString(String, Class)}</li>
-     *         <li>{@link TestingUtils#readExpectedString(String, String, Class)}</li>
-     *         <li>{@link TestingUtils#readExpectedString(String, String, String)}</li>
-     *     </ul>
      * </p>
+     * <ul>
+     *     <li>{@link TestingUtils#readInputString(String, Class)}</li>
+     *     <li>{@link TestingUtils#readInputString(String, String, Class)}</li>
+     *     <li>{@link TestingUtils#readInputString(String, String, String)}</li>
+     *     <li>{@link TestingUtils#readExpectedString(String, Class)}</li>
+     *     <li>{@link TestingUtils#readExpectedString(String, String, Class)}</li>
+     *     <li>{@link TestingUtils#readExpectedString(String, String, String)}</li>
+     * </ul>
      * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactType the artifact type
@@ -416,6 +416,7 @@ public class TestingUtils {
      * @param testCase the test case, used in the path
      * @param expectedArtifactName the filename of the expected artifact
      * @param actualObject the actual object to compare to an expected resource
+     * @param strict to adjust comparison mode
      */
     @SneakyThrows
     public void assertObject(String suite, String testCase, String expectedArtifactName, Object actualObject, boolean strict) {

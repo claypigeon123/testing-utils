@@ -27,7 +27,10 @@ import java.util.Optional;
  */
 public class TestingUtilsExtension implements TestInstancePostProcessor, ParameterResolver {
 
-    public static final String TEST_CASE_PARAM = "testCase";
+    /**
+     * Test methods receive the test case name as this argument.
+     */
+    public static final String TEST_CASE_ARGUMENT_NAME = "testCase";
 
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
@@ -47,7 +50,7 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, Paramet
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         Parameter parameter = parameterContext.getParameter();
 
-        return parameter.getName().equals(TEST_CASE_PARAM) && parameter.getType().equals(String.class);
+        return parameter.getName().equals(TEST_CASE_ARGUMENT_NAME) && parameter.getType().equals(String.class);
     }
 
     @Override

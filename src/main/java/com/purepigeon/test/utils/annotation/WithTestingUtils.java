@@ -18,21 +18,21 @@ import java.lang.annotation.*;
  * </p>
  * <p>
  *     For example:
- *     <pre>
- *     {@code
- *         // ...
- *         @SpringBootTest
- *         @WithTestingUtils
- *         class SampleServiceImplTest {
- *
- *             @Autowired
- *             private TestingUtils testingUtils;
- *
- *             // ...
- *         }
- *     }
- *     </pre>
  * </p>
+ * <pre>
+ * {@code
+ *     // ...
+ *     @SpringBootTest
+ *     @WithTestingUtils
+ *     class SampleServiceImplTest {
+ *
+ *         @Autowired
+ *         private TestingUtils testingUtils
+ *
+ *         // ...
+ *     }
+ * }
+ * </pre>
  */
 @Inherited
 @Documented

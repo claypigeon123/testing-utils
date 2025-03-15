@@ -16,37 +16,41 @@ import java.lang.annotation.*;
  * </p>
  * <p>
  *     For example, given the following:
- *     <pre>
- *     {@code
+ * </p>
+ * <pre>
+ * {@code
+ *     // ...
+ *     @WithTestingUtils
+ *     @Suite("service/impl")
+ *     class SampleServiceImplTest {
+ *
+ *         @Autowired
+ *         private TestingUtils testingUtils
+ *
  *         // ...
- *         @WithTestingUtils
- *         @Suite("service/impl")
- *         class SampleServiceImplTest {
- *
- *             @Autowired
- *             private TestingUtils testingUtils;
- *
- *             // ...
- *         }
  *     }
- *     </pre>
+ * }
+ * </pre>
+ * <p>
  *     {@code testingUtils.getSuite()} would return {@code service/impl/SampleServiceImplTest}.
  * </p>
  * <p>
  *     And given the following:
- *     <pre>
- *     {@code
+ * </p>
+ * <pre>
+ * {@code
+ *     // ...
+ *     @WithTestingUtils
+ *     class SampleServiceImplTest {
+ *
+ *         @Autowired
+ *         private TestingUtils testingUtils
+ *
  *         // ...
- *         @WithTestingUtils
- *         class SampleServiceImplTest {
- *
- *             @Autowired
- *             private TestingUtils testingUtils;
- *
- *             // ...
- *         }
  *     }
- *     </pre>
+ * }
+ * </pre>
+ * <p>
  *     {@code testingUtils.getSuite()} would return {@code SampleServiceImplTest}.
  * </p>
  */
@@ -57,6 +61,7 @@ import java.lang.annotation.*;
 public @interface Suite {
     /**
      * Prefix to apply to {@link TestingUtils#getSuite()}
+     * @return The given prefix
      */
     String value();
 }

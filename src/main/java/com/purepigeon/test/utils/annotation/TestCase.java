@@ -14,27 +14,31 @@ import java.lang.annotation.*;
  * </p>
  * <p>
  *     For example, given the following test method:
- *     <pre>
- *     {@code
- *         @Test
- *         void testMethod(String testCase) {
- *             // ...
- *         }
+ * </p>
+ * <pre>
+ * {@code
+ *     @Test
+ *     void testMethod(String testCase) {
+ *         // ...
  *     }
- *     </pre>
+ * }
+ * </pre>
+ * <p>
  *     The {@code testCase} value would be {@code testMethod}.
  * </p>
  * <p>
  *     And given the following test method:
- *     <pre>
- *     {@code
- *         @Test
- *         @TestCase("someTestMethod_200")
- *         void testMethod(String testCase) {
- *             // ...
- *         }
+ * </p>
+ * <pre>
+ * {@code
+ *     @Test
+ *     @TestCase("someTestMethod_200")
+ *     void testMethod(String testCase) {
+ *         // ...
  *     }
- *     </pre>
+ * }
+ * </pre>
+ * <p>
  *     The {@code testCase} value would be {@code someTestMethod_200}.
  * </p>
  */
@@ -45,6 +49,7 @@ import java.lang.annotation.*;
 public @interface TestCase {
     /**
      * The value to override the {@code testCase} test method argument with
+     * @return The given test case override
      */
     String value();
 }
