@@ -20,7 +20,7 @@ import java.lang.annotation.*;
  *     {@code
  *         @WithTestingUtils
  *         @Suite("service/impl")
- *         void SampleServiceImplTest {
+ *         class SampleServiceImplTest {
  *
  *             @Autowired
  *             private TestingUtils testingUtils;
@@ -36,7 +36,7 @@ import java.lang.annotation.*;
  *     <pre>
  *     {@code
  *         @WithTestingUtils
- *         void SampleServiceImplTest {
+ *         class SampleServiceImplTest {
  *
  *             @Autowired
  *             private TestingUtils testingUtils;
