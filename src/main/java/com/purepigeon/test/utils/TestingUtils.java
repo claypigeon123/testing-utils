@@ -25,35 +25,35 @@ public class TestingUtils {
     private final ObjectMapper objectMapper;
 
     @Nullable
-    private String testSuite;
+    private String suite;
 
     public <T> T readInputObject(String testCase, Class<T> returnObjectType) {
-        return readInputObject(getTestSuite(), testCase, returnObjectType);
+        return readInputObject(getSuite(), testCase, returnObjectType);
     }
 
     public <T> T readExpectedObject(String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(getTestSuite(), testCase, returnObjectType);
+        return readExpectedObject(getSuite(), testCase, returnObjectType);
     }
 
-    public <T> T readInputObject(String testSuite, String testCase, Class<T> returnObjectType) {
-        return readInputObject(testSuite, testCase, artifactFileName(returnObjectType), returnObjectType);
+    public <T> T readInputObject(String suite, String testCase, Class<T> returnObjectType) {
+        return readInputObject(suite, testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
-    public <T> T readExpectedObject(String testSuite, String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(testSuite, testCase, artifactFileName(returnObjectType), returnObjectType);
+    public <T> T readExpectedObject(String suite, String testCase, Class<T> returnObjectType) {
+        return readExpectedObject(suite, testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
-    public <T> T readInputObject(String testSuite, String testCase, String artifactName, Class<T> returnObjectType) {
-        return readObject(testSuite, testCase, ArtifactType.INPUT, artifactName, returnObjectType);
+    public <T> T readInputObject(String suite, String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(suite, testCase, ArtifactType.INPUT, artifactName, returnObjectType);
     }
 
-    public <T> T readExpectedObject(String testSuite, String testCase, String artifactName, Class<T> returnObjectType) {
-        return readObject(testSuite, testCase, ArtifactType.EXPECTED, artifactName, returnObjectType);
+    public <T> T readExpectedObject(String suite, String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(suite, testCase, ArtifactType.EXPECTED, artifactName, returnObjectType);
     }
 
     @SneakyThrows
-    public <T> T readObject(String testSuite, String testCase, ArtifactType artifactType, String artifactName, Class<T> returnObjectType) {
-        Path jsonPath = getClassPathFilePath(testSuite, testCase, artifactType, artifactName);
+    public <T> T readObject(String suite, String testCase, ArtifactType artifactType, String artifactName, Class<T> returnObjectType) {
+        Path jsonPath = getClassPathFilePath(suite, testCase, artifactType, artifactName);
         return objectMapper.readValue(new File(jsonPath.toUri()), returnObjectType);
     }
 
@@ -63,82 +63,82 @@ public class TestingUtils {
     }
 
     public String readInputString(String testCase, Class<?> returnObjectType) {
-        return readInputString(getTestSuite(), testCase, returnObjectType);
+        return readInputString(getSuite(), testCase, returnObjectType);
     }
 
     public String readExpectedString(String testCase, Class<?> returnObjectType) {
-        return readExpectedString(getTestSuite(), testCase, returnObjectType);
+        return readExpectedString(getSuite(), testCase, returnObjectType);
     }
 
-    public String readInputString(String testSuite, String testCase, Class<?> returnObjectType) {
-        return readInputString(testSuite, testCase, artifactFileName(returnObjectType));
+    public String readInputString(String suite, String testCase, Class<?> returnObjectType) {
+        return readInputString(suite, testCase, artifactFileName(returnObjectType));
     }
 
-    public String readExpectedString(String testSuite, String testCase, Class<?> returnObjectType) {
-        return readExpectedString(testSuite, testCase, artifactFileName(returnObjectType));
+    public String readExpectedString(String suite, String testCase, Class<?> returnObjectType) {
+        return readExpectedString(suite, testCase, artifactFileName(returnObjectType));
     }
 
-    public String readInputString(String testSuite, String testCase, String artifactName) {
-        return readString(testSuite, testCase, ArtifactType.INPUT, artifactName);
+    public String readInputString(String suite, String testCase, String artifactName) {
+        return readString(suite, testCase, ArtifactType.INPUT, artifactName);
     }
 
-    public String readExpectedString(String testSuite, String testCase, String artifactName) {
-        return readString(testSuite, testCase, ArtifactType.EXPECTED, artifactName);
+    public String readExpectedString(String suite, String testCase, String artifactName) {
+        return readString(suite, testCase, ArtifactType.EXPECTED, artifactName);
     }
 
     @SneakyThrows
-    public String readString(String testSuite, String testCase, ArtifactType artifactType, String artifactName) {
-        Path jsonPath = getClassPathFilePath(testSuite, testCase, artifactType, artifactName);
+    public String readString(String suite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path jsonPath = getClassPathFilePath(suite, testCase, artifactType, artifactName);
         return new String(Files.readAllBytes(jsonPath));
     }
 
     public void assertObject(String testCase, Object actualObject) {
-        assertObject(getTestSuite(), testCase, actualObject);
+        assertObject(getSuite(), testCase, actualObject);
     }
 
-    public void assertObject(String testSuite, String testCase, Object actualObject) {
-        assertObject(testSuite, testCase, artifactFileName(actualObject.getClass()), actualObject, true);
+    public void assertObject(String suite, String testCase, Object actualObject) {
+        assertObject(suite, testCase, artifactFileName(actualObject.getClass()), actualObject, true);
     }
 
-    public void assertObject(String testSuite, String testCase, String expectedArtefactName, Object actualObject) {
-        assertObject(testSuite, testCase, expectedArtefactName, actualObject, true);
+    public void assertObject(String suite, String testCase, String expectedArtefactName, Object actualObject) {
+        assertObject(suite, testCase, expectedArtefactName, actualObject, true);
     }
 
     @SneakyThrows
-    public void assertObject(String testSuite, String testCase, String expectedArtefactName, Object actualObject, boolean strict) {
+    public void assertObject(String suite, String testCase, String expectedArtefactName, Object actualObject, boolean strict) {
         String actualJson = objectMapper.writeValueAsString(actualObject);
-        String expectedJson = readString(testSuite, testCase, ArtifactType.EXPECTED, expectedArtefactName);
+        String expectedJson = readString(suite, testCase, ArtifactType.EXPECTED, expectedArtefactName);
         JSONAssert.assertEquals(expectedJson, actualJson, strict ? JSONCompareMode.NON_EXTENSIBLE : JSONCompareMode.LENIENT);
     }
 
-    private Path getClassPathFilePath(String testSuite, String testCase, ArtifactType artifactType, String artifactName) {
-        Path classPathDirPath = getClassPathDirPath(testSuite, testCase, artifactType);
+    private Path getClassPathFilePath(String suite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path classPathDirPath = getClassPathDirPath(suite, testCase, artifactType);
         return classPathDirPath.resolve(artifactName);
     }
 
     @SneakyThrows
-    private Path getClassPathDirPath(String testSuite, String testCase, ArtifactType artifactType) {
-        URL testSuiteResource = Objects.requireNonNull(getClass().getClassLoader().getResource(testSuite));
-        Path testSuiteBasePath = Paths.get(testSuiteResource.toURI());
+    private Path getClassPathDirPath(String suite, String testCase, ArtifactType artifactType) {
+        URL suiteResource = Objects.requireNonNull(getClass().getClassLoader().getResource(suite));
+        Path suiteBasePath = Paths.get(suiteResource.toURI());
 
         Path testDirRelativePath = Paths.get(testCase, artifactType.toString());
-        return testSuiteBasePath.resolve(testDirRelativePath);
+        return suiteBasePath.resolve(testDirRelativePath);
     }
 
     private String artifactFileName(Class<?> returnObjectType) {
         return returnObjectType.getSimpleName() + ".json";
     }
 
-    public String getTestSuite() {
-        if (!StringUtils.hasText(testSuite)) {
-            throw new IllegalStateException("TestSuite property is not set");
+    public String getSuite() {
+        if (!StringUtils.hasText(suite)) {
+            throw new IllegalStateException("Suite property is not set");
         }
-        return testSuite;
+        return suite;
     }
 
     @Autowired(required = false)
-    public void setTestSuite(@Nullable String testSuite) {
-        this.testSuite = testSuite;
+    public void setSuite(@Nullable String suite) {
+        this.suite = suite;
     }
 
     public enum ArtifactType {

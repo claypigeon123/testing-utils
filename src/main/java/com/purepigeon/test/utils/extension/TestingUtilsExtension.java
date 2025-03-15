@@ -18,14 +18,14 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, Paramet
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
-        String testSuite = Optional.ofNullable(testClass.getAnnotation(Suite.class))
+        String suite = Optional.ofNullable(testClass.getAnnotation(Suite.class))
             .map(Suite::value)
-            .map(suite -> suite + "/" + testClass.getSimpleName())
+            .map(s -> s + "/" + testClass.getSimpleName())
             .orElse(testClass.getSimpleName());
 
         ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
         TestingUtils testingUtils = applicationContext.getBean(TestingUtils.class);
-        testingUtils.setTestSuite(testSuite);
+        testingUtils.setSuite(suite);
     }
 
 
