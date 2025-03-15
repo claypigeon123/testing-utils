@@ -18,6 +18,7 @@ import java.lang.annotation.*;
  *     For example, given the following:
  *     <pre>
  *     {@code
+ *         // ...
  *         @WithTestingUtils
  *         @Suite("service/impl")
  *         class SampleServiceImplTest {
@@ -35,6 +36,7 @@ import java.lang.annotation.*;
  *     And given the following:
  *     <pre>
  *     {@code
+ *         // ...
  *         @WithTestingUtils
  *         class SampleServiceImplTest {
  *

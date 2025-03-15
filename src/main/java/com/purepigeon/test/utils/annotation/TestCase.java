@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- *     Annotation to customize the {@code testCase} argument for a given test method, resolved by
+ *     Annotation to override the {@code testCase} argument for a given test method, resolved by
  *     {@link TestingUtilsExtension}.
  * </p>
  * <p>
@@ -43,5 +43,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface TestCase {
+    /**
+     * The value to override the {@code testCase} test method argument with
+     */
     String value();
 }
