@@ -1,6 +1,5 @@
 package com.purepigeon.test.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
 
 @TestComponent
@@ -38,37 +36,30 @@ public class TestingUtils {
     }
 
     public <T> T readInputObject(String testSuite, String testCase, Class<T> returnObjectType) {
-        return readInputObject(testSuite, testCase, artefactFileName(returnObjectType), returnObjectType);
+        return readInputObject(testSuite, testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
     public <T> T readExpectedObject(String testSuite, String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(testSuite, testCase, artefactFileName(returnObjectType), returnObjectType);
+        return readExpectedObject(testSuite, testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
-    public <T> T readInputObject(String testSuite, String testCase, String artefactName, Class<T> returnObjectType) {
-        return readJsonToObject(testSuite, testCase, ArtefactType.INPUT, artefactName, returnObjectType);
+    public <T> T readInputObject(String testSuite, String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(testSuite, testCase, ArtifactType.INPUT, artifactName, returnObjectType);
     }
 
-    public <T> T readExpectedObject(String testSuite, String testCase, String artefactName, Class<T> returnObjectType) {
-        return readJsonToObject(testSuite, testCase, ArtefactType.EXPECTED, artefactName, returnObjectType);
+    public <T> T readExpectedObject(String testSuite, String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(testSuite, testCase, ArtifactType.EXPECTED, artifactName, returnObjectType);
     }
 
     @SneakyThrows
-    public <T> T readJsonToObject(String testSuite, String testCase, ArtefactType artefactType, String artefactName,
-                                  Class<T> returnObjectType) {
-        Path jsonPath = getClassPathFilePath(testSuite, testCase, artefactType, artefactName);
+    public <T> T readObject(String testSuite, String testCase, ArtifactType artifactType, String artifactName, Class<T> returnObjectType) {
+        Path jsonPath = getClassPathFilePath(testSuite, testCase, artifactType, artifactName);
         return objectMapper.readValue(new File(jsonPath.toUri()), returnObjectType);
     }
 
     @SneakyThrows
-    public <T> T readJsonToObject(String jsonContent, Class<T> returnObjectType) {
+    public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
         return objectMapper.readValue(jsonContent, returnObjectType);
-    }
-
-    @SneakyThrows
-    public <T> List<T> readJsonToList(String testSuite, String testCase, ArtefactType artefactType, String artefactName) {
-        Path jsonPath = getClassPathFilePath(testSuite, testCase, artefactType, artefactName);
-        return objectMapper.readValue(new File(jsonPath.toUri()), new TypeReference<>() {});
     }
 
     public String readInputString(String testCase, Class<?> returnObjectType) {
@@ -80,24 +71,24 @@ public class TestingUtils {
     }
 
     public String readInputString(String testSuite, String testCase, Class<?> returnObjectType) {
-        return readInputString(testSuite, testCase, artefactFileName(returnObjectType));
+        return readInputString(testSuite, testCase, artifactFileName(returnObjectType));
     }
 
     public String readExpectedString(String testSuite, String testCase, Class<?> returnObjectType) {
-        return readExpectedString(testSuite, testCase, artefactFileName(returnObjectType));
+        return readExpectedString(testSuite, testCase, artifactFileName(returnObjectType));
     }
 
-    public String readInputString(String testSuite, String testCase, String artefactName) {
-        return readString(testSuite, testCase, ArtefactType.INPUT, artefactName);
+    public String readInputString(String testSuite, String testCase, String artifactName) {
+        return readString(testSuite, testCase, ArtifactType.INPUT, artifactName);
     }
 
-    public String readExpectedString(String testSuite, String testCase, String artefactName) {
-        return readString(testSuite, testCase, ArtefactType.EXPECTED, artefactName);
+    public String readExpectedString(String testSuite, String testCase, String artifactName) {
+        return readString(testSuite, testCase, ArtifactType.EXPECTED, artifactName);
     }
 
     @SneakyThrows
-    public String readString(String testSuite, String testCase, ArtefactType artefactType, String artefactName) {
-        Path jsonPath = getClassPathFilePath(testSuite, testCase, artefactType, artefactName);
+    public String readString(String testSuite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path jsonPath = getClassPathFilePath(testSuite, testCase, artifactType, artifactName);
         return new String(Files.readAllBytes(jsonPath));
     }
 
@@ -106,41 +97,41 @@ public class TestingUtils {
     }
 
     public void assertObject(String testSuite, String testCase, Object actualObject) {
-        assertObject(testSuite, testCase, artefactFileName(actualObject.getClass()), actualObject, true);
-    }
-
-    @SneakyThrows
-    public void assertObject(String testSuite, String testCase, String expectedArtefactName, Object actualObject, boolean strict) {
-        String actualJson = objectMapper.writeValueAsString(actualObject);
-        String expectedJson = readString(testSuite, testCase, ArtefactType.EXPECTED, expectedArtefactName);
-        JSONAssert.assertEquals(expectedJson, actualJson, strict ? JSONCompareMode.NON_EXTENSIBLE : JSONCompareMode.LENIENT);
+        assertObject(testSuite, testCase, artifactFileName(actualObject.getClass()), actualObject, true);
     }
 
     public void assertObject(String testSuite, String testCase, String expectedArtefactName, Object actualObject) {
         assertObject(testSuite, testCase, expectedArtefactName, actualObject, true);
     }
 
-    private Path getClassPathFilePath(String testSuite, String testCase, ArtefactType artefactType, String artefactName) {
-        Path classPathDirPath = getClassPathDirPath(testSuite, testCase, artefactType);
-        return classPathDirPath.resolve(artefactName);
+    @SneakyThrows
+    public void assertObject(String testSuite, String testCase, String expectedArtefactName, Object actualObject, boolean strict) {
+        String actualJson = objectMapper.writeValueAsString(actualObject);
+        String expectedJson = readString(testSuite, testCase, ArtifactType.EXPECTED, expectedArtefactName);
+        JSONAssert.assertEquals(expectedJson, actualJson, strict ? JSONCompareMode.NON_EXTENSIBLE : JSONCompareMode.LENIENT);
+    }
+
+    private Path getClassPathFilePath(String testSuite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path classPathDirPath = getClassPathDirPath(testSuite, testCase, artifactType);
+        return classPathDirPath.resolve(artifactName);
     }
 
     @SneakyThrows
-    private Path getClassPathDirPath(String testSuite, String testCase, ArtefactType artefactType) {
+    private Path getClassPathDirPath(String testSuite, String testCase, ArtifactType artifactType) {
         URL testSuiteResource = Objects.requireNonNull(getClass().getClassLoader().getResource(testSuite));
         Path testSuiteBasePath = Paths.get(testSuiteResource.toURI());
 
-        Path testDirRelativePath = Paths.get(testCase, artefactType.toString());
+        Path testDirRelativePath = Paths.get(testCase, artifactType.toString());
         return testSuiteBasePath.resolve(testDirRelativePath);
     }
 
-    private String artefactFileName(Class<?> returnObjectType) {
+    private String artifactFileName(Class<?> returnObjectType) {
         return returnObjectType.getSimpleName() + ".json";
     }
 
     public String getTestSuite() {
         if (!StringUtils.hasText(testSuite)) {
-            throw new UnsupportedOperationException("TestSuite property is not set");
+            throw new IllegalStateException("TestSuite property is not set");
         }
         return testSuite;
     }
@@ -150,7 +141,7 @@ public class TestingUtils {
         this.testSuite = testSuite;
     }
 
-    public enum ArtefactType {
+    public enum ArtifactType {
         INPUT, EXPECTED;
 
         @Override

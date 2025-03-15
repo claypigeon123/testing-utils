@@ -13,8 +13,10 @@ import java.util.Optional;
 
 public class TestingUtilsExtension implements TestInstancePostProcessor, ParameterResolver {
 
+    public static final String TEST_CASE_PARAM = "testCase";
+
     @Override
-    public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
+    public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
         String testSuite = Optional.ofNullable(testClass.getAnnotation(Suite.class))
             .map(Suite::value)
@@ -31,7 +33,7 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, Paramet
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         Parameter parameter = parameterContext.getParameter();
 
-        return parameter.getName().equals("testCase") && parameter.getType().equals(String.class);
+        return parameter.getName().equals(TEST_CASE_PARAM) && parameter.getType().equals(String.class);
     }
 
     @Override
