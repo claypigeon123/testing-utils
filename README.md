@@ -31,14 +31,14 @@ Maven:
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils</artifactId>
-    <version>0.2.1</version>
+    <version>1.0.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils:0.2.1'
+testImplementation 'com.purepigeon.test:testing-utils:1.0.0'
 ```
 
 ## 2. Annotate test class
