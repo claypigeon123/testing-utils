@@ -1,12 +1,32 @@
-
-
 # Testing Utilities for Spring
+Streamline Spring Boot unit and integration tests by eliminating boilerplate code related to test resource
+loading and assertion. This library simplifies the process of managing test data, allowing developers to focus on
+the core logic of the tests.
 
-Streamline unit testing with test resources, let this component take care of the boilerplate.
+# Key features
 
-## Usage
+- **Automated Test Resource Loading:**  Automatically loads test resources (JSON, XML, text files, etc.) based
+  on a convention-driven approach.
+- **Type Conversion:** Converts test resource content into Java objects seamlessly.
+- **JSON Assertions:** Simplifies the comparison of actual results with expected JSON payloads.
+- **JUnit 5 Integration:**  Provides a JUnit 5 extension for easy integration into your existing test suites.
+- **Suite and TestCase Organization:** Organizes test resources logically using `@Suite` and `@TestCase` annotations.
+- **Reduces Boilerplate:**  Minimizes repetitive code for reading input data and verifying expected outputs.
 
-### Add Maven test dependency
+# Why use this library?
+
+Unit tests often become cluttered with code that prepares input objects and defines expected results.
+This library addresses this problem by:
+
+- **Centralizing Resource Loading:**  Handles the complexities of locating and reading test resources.
+- **Improving Readability:** Makes your tests more concise and easier to understand by removing boilerplate.
+- **Enhancing Maintainability:**  Simplifies test maintenance by separating test data specifics from test logic.
+- **Promoting Consistency:** Enforces a consistent approach to test resource management across your project.
+
+# Usage
+
+## 1. Add dependency
+Maven:
 ```xml
 <dependency>
     <groupId>com.purepigeon.test</groupId>
@@ -16,77 +36,103 @@ Streamline unit testing with test resources, let this component take care of the
 </dependency>
 ```
 
-### Description
-
-#### Rationale
-Unit tests are often polluted with many lines of preparing objects as inputs / expectations.
-The `TestingUtils` class provides various utilities for loading test resources (and asserting on results),
-allowing the boilerplate steps to move from the unit test code to the classpath test resources. This keeps the
-unit test focused on the testing itself.
-
-#### The `TestingUtils` class
-This class is the main workhorse of this component. It - for one - streamlines the reading of test
-resources into objects or raw strings.
-
-To do this, it keeps track of the current test suite via its `suite` property. The path to a test resource is
-then constructed as such:
-
-`classpath:/{suite}/{testCase}/{artifactType}/{artifactName}`
-
-Where:
-  - `suite` is a given per test class (valued by default as the test class name)
-  - `testCase` is a given per test method (valued by default as the test method name)
-  - `artifactType` depends on the desired resource type ("input" or "expected")
-  - `artifactName` depends on the desired artifact
-
-As an example with this in mind, within the `sampleTest` method of a `SampleServiceTest` class, creating an
-instance of an input object can simply become:
-```java
-SampleRequest input = testingUtils.readInputObject(testCase, SampleRequest.class);
+Gradle:
+```groovy
+testImplementation 'com.purepigeon.test:testing-utils:0.2.1'
 ```
-Where `suite` is already known and `artifactType` is implied by the method we use; so we only need
-to specify `testCase` and `artifactName`. In this case, `artifactName` is inferred from the type to be
-`SampleRequest.json`, so the path that the resource is read from becomes:
 
-`classpath:/SampleServiceTest/sampleTest/input/SampleRequest.json`
+## 2. Annotate test class
+Add the `@WithTestingUtils` annotation to your test class. This registers a `TestingUtils` bean in the test application
+context and enables the JUnit 5 extension:
 
-#### How it works
-
-Using the `@WithTestingUtils` annotation on a test class has the following effects:
-  - Registers a `TestingUtils` bean in the test application context
-  - Enables the Junit 5 extension `TestingUtilsExtension`, which:
-    - Sets the aforementioned `suite` property in the `TestingUtils` instance
-    - Resolves a `testCase` string argument for test methods
-
-#### The `@Suite` annotation
-When a test class is annotated with this, the annotation value becomes a prefix for the `suite` property. This
-allows for more fine-grained / logical organization of the test resources.
-
-Keeping with the above example, if the test class `SampleServiceTest` is also annotated with:
 ```java
+@SpringBootTest
+@WithTestingUtils
+public class MyServiceTest {
+
+    @Autowired
+    private TestingUtils testingUtils;
+
+    // ...
+}
+```
+
+## 3. Understand resource loading convention
+The `TestingUtils` class uses a convention to locate test resources based on the following path structure:
+
+```text
+classpath:/{suite}/{testCase}/{artifactType}/{artifactName}
+```
+
+Let's break down each part of this path:
+- **suite**: Represents a logical grouping of tests, typically related to a specific class or component.
+  By default, this is the name of the test class. It can be customized using the `@Suite` annotation.
+- **testCase**: Identifies a specific test method within the suite. By default, this is the name of the test method, and
+  is provided as a `String testCase` argument to the test method. It can be overridden using the `@TestCase` annotation.
+- **artifactType**: Indicates the type of test resource ("input" or "expected"). Most `TestingUtils` methods
+  determine this value based on the method name (e.g., `readInputObject` implies "input").
+- **artifactName**: The name of the test resource file. This can be inferred from the class type
+  provided to the `TestingUtils` method (e.g., "SampleRequest.json" for
+  `readInputObject(testCase, SampleRequest.class)`), or provided directly in other respective methods.
+
+## 4. Annotations
+
+### `@WithTestingUtils`
+- Applied to a test class.
+- Registers a `TestingUtils` bean in the test application context.
+- Enables the `TestingUtilsExtension` JUnit 5 extension.
+
+### `@Suite`
+- Applied to a test class. 
+- Specifies a prefix for the `suite` property in the `TestingUtils` instance. 
+- Allows for logical organization of test resources.
+
+```java
+@SpringBootTest
+@WithTestingUtils
 @Suite("service/impl")
+public class SampleServiceTest {
+    // ...
+}
 ```
-Then the path to the resource in the same test method would become:
+In this example, the `suite` path will start with `service/impl`, the full path being: `service/impl/SampleServiceTest`
 
-`classpath:/service/impl/SampleServiceTest/sampleTest/input/SampleRequest.json`
+### `@TestCase`
+- Applied to a test method. 
+- Overrides the default testCase argument value (which is the test method name). 
+- Useful for reusing test resources across multiple test methods.
 
-#### The `@TestCase` annotation
-When a test method is annotated with this, it overrides the resolved value for the `testCase` method argument (which
-by default would be the test method name). This is useful if we want to reuse the same resources
-across multiple test methods.
-
-Keeping with the above example, if the test method is also annotated with:
 ```java
-@TestCase("sampleTest_successful")
+@SpringBootTest
+@WithTestingUtils
+public class SampleServiceTest {
+
+    @Autowired
+    private TestingUtils testingUtils;
+
+    @Test
+    @TestCase("processReport_v2")
+    void processReport_successful(String testCase) {
+        // ...
+    }
+}
 ```
-Then the path to the resource would become:
+In this example, the value of the `testCase` argument will be `processReport_v2`.
 
-`classpath:/service/impl/SampleServiceTest/sampleTest_successful/input/SampleRequest.json`
+## 5. Using the `TestingUtils` bean
+The TestingUtils bean provides several methods for loading and asserting on test resources, some of which are:
+- **readInputObject(String testCase, Class<T> type)**: Reads an input resource and converts it into an object of
+  the specified type. 
+- **readExpectedObject(String testCase, Class<T> type)**: Reads an expected resource and converts it into an object
+  of the specified type. 
+- **readInputString(String testCase, Class<?> type)**: Reads an input resource as a raw string.
+- **readExpectedString(String testCase, Class<?> type)**: Reads an expected resource as a raw string. 
+- **assertObject(String testCase, Object actual)**: Asserts that an object matches the expected JSON resource. 
+- **jsonToObject(String json, Class<T> type)**: Converts a JSON string to an object.
+- **objectToJson(String json, Class<T> type)**: Converts an object to a JSON string.
 
-### Quickstart
-
-#### Example controller unit testing
-
+# Example Usage
+## Controller
 ```java
 // ...
 @WithTestingUtils
@@ -104,22 +150,18 @@ class SampleControllerTest {
     private SampleService sampleService;
 
     // ...
-
-    // testCase argument is resolved to value of @TestCase annotation
+    
     @Test
     @TestCase("processReport")
     void processReport_200(String testCase) {
-        // load input test resource as raw json string located at
-        // classpath:/controller/SampleControllerTest/processReport/input/ProcessReportRequest.json
+        // given
         String request = testingUtils.readInputString(testCase, ProcessReportRequest.class);
-        
-        // load expected test resource as raw json string located at
-        // classpath:/controller/SampleControllerTest/processReport/expected/ProcessReportResponse.json
         String response = testingUtils.readExpectedString(testCase, ProcessReportResponse.class);
 
         when(sampleService.processReport(any()))
             .thenReturn(testingUtils.jsonToObject(response, ProcessReportResponse.class));
 
+        // expect
         mockMvc.perform(
             post("/reports/process")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -127,13 +169,12 @@ class SampleControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().json(response));
         
-        verify(sampleService).processReport(request);
+        verify(sampleService).processReport(testingUtils.jsonToObject(request, ProcessReportRequest.class));
     }
 }
 ```
 
-#### Example service unit testing
-
+## Service
 ```java
 // ...
 @SpringBootTest
@@ -148,20 +189,18 @@ class SampleServiceTest {
     private SampleService sampleService;
     
     // ...
-
-    // testCase argument is resolved to test method name
+    
     @Test
     void processReport_successful(String testCase) {
-        // load test resource as ProcessReportRequest object located at
-        // classpath:/service/SampleServiceTest/processReport_successful/input/ProcessReportRequest.json
+        // given
         ProcessReportRequest input = testingUtils.readInputObject(testCase, ProcessReportRequest.class);
 
         // mocking...
 
+        // when
         ProcessReportResponse result = sampleService.processReport(input);
 
-        // JSON assertion against test resource located at
-        // /service/SampleServiceTest/processReport_successful/expected/ProcessReportResponse.json
+        // then
         testingUtils.assertObject(testCase, result);
         
         // verifications...
@@ -170,3 +209,17 @@ class SampleServiceTest {
     // ...
 }
 ```
+
+# Contributing
+Contributions are welcome! If you have ideas for new features or improvements, please submit a pull request or
+open an issue to discuss further.
+
+# License
+This project is licensed under Apache 2.0. See the LICENSE file for details.
+
+# Troubleshooting
+- **Resource not found**: Double-check the resource path and ensure that the file exists in the correct
+  location under the `src/test/resources` directory. Pay close attention to the suite, testCase, artifactType, and
+  artifactName components of the path.
+- **JSON / type conversion errors**: Verify that your JSON files are valid and well-formed, or that your potentially customized
+  ObjectMapper configuration is present in the test application context.
