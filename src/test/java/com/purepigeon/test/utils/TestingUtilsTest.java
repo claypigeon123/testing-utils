@@ -1,8 +1,6 @@
 package com.purepigeon.test.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.purepigeon.test.utils.annotation.Suite;
-import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.setup.TestApp;
 import com.purepigeon.test.utils.setup.TestData;
@@ -19,12 +17,11 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Suite("utils")
 @WithTestingUtils
 @SpringBootTest(classes = TestApp.class)
 class TestingUtilsTest {
 
-    private static final String SUITE = "utils/" + TestingUtilsTest.class.getSimpleName();
+    private static final String SUITE = TestingUtilsTest.class.getSimpleName();
 
     private static final String TEST_DATA = "TestData.json";
     private static final String RENAMED_TEST_DATA = "RenamedTestData.json";
@@ -41,13 +38,8 @@ class TestingUtilsTest {
     }
 
     @Test
-    void readInputObject_suiteAndTestCase(String testCase) {
-        performReadTest(() -> testingUtils.readInputObject(SUITE, testCase, TestData.class));
-    }
-
-    @Test
-    void readInputObject_suiteAndTestCaseAndArtifactName(String testCase) {
-        performReadTest(() -> testingUtils.readInputObject(SUITE, testCase, RENAMED_TEST_DATA, TestData.class));
+    void readInputObject_testCaseAndArtifactName(String testCase) {
+        performReadTest(() -> testingUtils.readInputObject(testCase, RENAMED_TEST_DATA, TestData.class));
     }
 
     @Test
@@ -56,19 +48,14 @@ class TestingUtilsTest {
     }
 
     @Test
-    void readExpectedObject_suiteAndTestCase(String testCase) {
-        performReadTest(() -> testingUtils.readExpectedObject(SUITE, testCase, TestData.class));
-    }
-
-    @Test
-    void readExpectedObject_suiteAndTestCaseAndArtifactName(String testCase) {
-        performReadTest(() -> testingUtils.readExpectedObject(SUITE, testCase, RENAMED_TEST_DATA, TestData.class));
+    void readExpectedObject_testCaseAndArtifactName(String testCase) {
+        performReadTest(() -> testingUtils.readExpectedObject(testCase, RENAMED_TEST_DATA, TestData.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "INPUT", "EXPECTED" })
     void readObject(String artifactType, String testCase) {
-        performReadTest(() -> testingUtils.readObject(SUITE, testCase, TestingUtils.ArtifactType.valueOf(artifactType), TEST_DATA, TestData.class));
+        performReadTest(() -> testingUtils.readObject(SUITE, testCase, ArtifactType.valueOf(artifactType), TEST_DATA, TestData.class));
     }
 
     @Test
@@ -77,18 +64,18 @@ class TestingUtilsTest {
     }
 
     @Test
+    void objectToJson() {
+        performRawReadTest(() -> testingUtils.objectToJson(TestData.create()));
+    }
+
+    @Test
     void readInputString_testCaseOnly(String testCase) {
         performRawReadTest(() -> testingUtils.readInputString(testCase, TestData.class));
     }
 
     @Test
-    void readInputString_suiteAndTestCase(String testCase) {
-        performRawReadTest(() -> testingUtils.readInputString(SUITE, testCase, TestData.class));
-    }
-
-    @Test
-    void readInputString_suiteAndTestCaseAndArtifactName(String testCase) {
-        performRawReadTest(() -> testingUtils.readInputString(SUITE, testCase, RENAMED_TEST_DATA));
+    void readInputString_testCaseAndArtifactName(String testCase) {
+        performRawReadTest(() -> testingUtils.readInputString(testCase, RENAMED_TEST_DATA));
     }
 
     @Test
@@ -97,19 +84,14 @@ class TestingUtilsTest {
     }
 
     @Test
-    void readExpectedString_suiteAndTestCase(String testCase) {
-        performRawReadTest(() -> testingUtils.readExpectedString(SUITE, testCase, TestData.class));
-    }
-
-    @Test
-    void readExpectedString_suiteAndTestCaseAndArtifactName(String testCase) {
-        performRawReadTest(() -> testingUtils.readExpectedString(SUITE, testCase, RENAMED_TEST_DATA));
+    void readExpectedString_testCaseAndArtifactName(String testCase) {
+        performRawReadTest(() -> testingUtils.readExpectedString(testCase, RENAMED_TEST_DATA));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "INPUT", "EXPECTED" })
     void readString(String artifactType, String testCase) {
-        performRawReadTest(() -> testingUtils.readString(SUITE, testCase, TestingUtils.ArtifactType.valueOf(artifactType), TEST_DATA));
+        performRawReadTest(() -> testingUtils.readString(SUITE, testCase, ArtifactType.valueOf(artifactType), TEST_DATA));
     }
 
     @Test
@@ -118,18 +100,13 @@ class TestingUtilsTest {
     }
 
     @Test
-    void assertObject_suiteAndTestCase(String testCase) {
-        testingUtils.assertObject(SUITE, testCase, TestData.create());
-    }
-
-    @Test
-    void assertObject_suiteAndTestCaseAndArtifactName(String testCase) {
-        testingUtils.assertObject(SUITE, testCase, RENAMED_TEST_DATA, TestData.create());
+    void assertObject_testCaseAndArtifactName(String testCase) {
+        testingUtils.assertObject(testCase, RENAMED_TEST_DATA, TestData.create());
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
-    void assertObject_suiteAndTestCaseAndArtifactNameAndStrictness(boolean strict, String testCase) {
+    void assertObject_testCaseAndArtifactNameAndStrictness(boolean strict, String testCase) {
         testingUtils.assertObject(SUITE, testCase, TEST_DATA, TestData.create(), strict);
     }
 
@@ -145,14 +122,8 @@ class TestingUtilsTest {
     }
 
     @Test
-    void getTestCase_methodName(String testCase) {
-        assertEquals("getTestCase_methodName", testCase);
-    }
-
-    @Test
-    @TestCase("getTestCase_customName_123")
-    void getTestCase_customName(String testCase) {
-        assertEquals("getTestCase_customName_123", testCase);
+    void getTestCase(String testCase) {
+        assertEquals("getTestCase", testCase);
     }
 
     // --

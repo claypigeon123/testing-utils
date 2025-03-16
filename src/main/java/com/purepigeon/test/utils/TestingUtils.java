@@ -54,7 +54,7 @@ public class TestingUtils {
      * @param <T> The desired type
      */
     public <T> T readInputObject(String testCase, Class<T> returnObjectType) {
-        return readInputObject(getSuite(), testCase, returnObjectType);
+        return readInputObject(testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
     /**
@@ -72,45 +72,7 @@ public class TestingUtils {
      * @param <T> The desired type
      */
     public <T> T readExpectedObject(String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(getSuite(), testCase, returnObjectType);
-    }
-
-    /**
-     * <p>
-     *     Reads an input JSON test resource as the specified type. 
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/input/TestRequest.json}.
-     * </p>
-     * @param suite the test suite, used in the path
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     */
-    public <T> T readInputObject(String suite, String testCase, Class<T> returnObjectType) {
-        return readInputObject(suite, testCase, artifactFileName(returnObjectType), returnObjectType);
-    }
-
-    /**
-     * <p>
-     *     Reads an expected JSON test resource as the specified type. 
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param suite the test suite, used in the path
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     */
-    public <T> T readExpectedObject(String suite, String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(suite, testCase, artifactFileName(returnObjectType), returnObjectType);
+        return readExpectedObject(testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
     /**
@@ -126,15 +88,14 @@ public class TestingUtils {
      *     returnObjectType of {@code TestRequest.class}, the test resource would be read from
      *     {@code {suite}/{testCase}/input/TestRequestModified.json}, returned as an instance of {@code TestRequest}.
      * </p>
-     * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactName the filename of the artifact to read
      * @param returnObjectType the desired type
      * @return Object, mapped from the read resource
      * @param <T> The desired type
      */
-    public <T> T readInputObject(String suite, String testCase, String artifactName, Class<T> returnObjectType) {
-        return readObject(suite, testCase, ArtifactType.INPUT, artifactName, returnObjectType);
+    public <T> T readInputObject(String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(getSuite(), testCase, ArtifactType.INPUT, artifactName, returnObjectType);
     }
 
     /**
@@ -150,15 +111,14 @@ public class TestingUtils {
      *     returnObjectType of {@code TestRequest.class}, the test resource would be read from
      *     {@code {suite}/{testCase}/expected/TestRequestModified.json}, returned as an instance of {@code TestRequest}.
      * </p>
-     * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactName the filename of the artifact to read
      * @param returnObjectType the desired type
      * @return Object, mapped from the read resource
      * @param <T> The desired type
      */
-    public <T> T readExpectedObject(String suite, String testCase, String artifactName, Class<T> returnObjectType) {
-        return readObject(suite, testCase, ArtifactType.EXPECTED, artifactName, returnObjectType);
+    public <T> T readExpectedObject(String testCase, String artifactName, Class<T> returnObjectType) {
+        return readObject(getSuite(), testCase, ArtifactType.EXPECTED, artifactName, returnObjectType);
     }
 
     /**
@@ -171,10 +131,8 @@ public class TestingUtils {
      * <ul>
      *     <li>{@link TestingUtils#readInputObject(String, Class)}</li>
      *     <li>{@link TestingUtils#readInputObject(String, String, Class)}</li>
-     *     <li>{@link TestingUtils#readInputObject(String, String, String, Class)}</li>
      *     <li>{@link TestingUtils#readExpectedObject(String, Class)}</li>
      *     <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedObject(String, String, String, Class)}</li>
      * </ul>
      * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
@@ -206,6 +164,18 @@ public class TestingUtils {
 
     /**
      * <p>
+     *     Convert an object to raw JSON.
+     * </p>
+     * @param object JSON string to convert
+     * @return the raw JSON string
+     */
+    @SneakyThrows
+    public String objectToJson(Object object) {
+        return objectMapper.writeValueAsString(object);
+    }
+
+    /**
+     * <p>
      *     Reads an input JSON test resource as a string. 
      * </p>
      * <p>
@@ -218,7 +188,7 @@ public class TestingUtils {
      * @return String representation of the read resource
      */
     public String readInputString(String testCase, Class<?> returnObjectType) {
-        return readInputString(getSuite(), testCase, returnObjectType);
+        return readInputString(testCase, artifactFileName(returnObjectType));
     }
 
     /**
@@ -235,43 +205,7 @@ public class TestingUtils {
      * @return String representation of the read resource
      */
     public String readExpectedString(String testCase, Class<?> returnObjectType) {
-        return readExpectedString(getSuite(), testCase, returnObjectType);
-    }
-
-    /**
-     * <p>
-     *     Reads an input JSON test resource as a string. 
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/input/TestRequest.json}.
-     * </p>
-     * @param suite the test suite, used in the path
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return String representation of the read resource
-     */
-    public String readInputString(String suite, String testCase, Class<?> returnObjectType) {
-        return readInputString(suite, testCase, artifactFileName(returnObjectType));
-    }
-
-    /**
-     * <p>
-     *     Reads an expected JSON test resource as a string. 
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param suite the test suite, used in the path
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return String representation of the read resource
-     */
-    public String readExpectedString(String suite, String testCase, Class<?> returnObjectType) {
-        return readExpectedString(suite, testCase, artifactFileName(returnObjectType));
+        return readExpectedString(testCase, artifactFileName(returnObjectType));
     }
 
     /**
@@ -287,13 +221,12 @@ public class TestingUtils {
      *     the test resource would be read from {@code {suite}/{testCase}/input/TestRequest.json}, returned
      *     as a string.
      * </p>
-     * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactName the filename of the artifact to read
      * @return String representation of the read resource
      */
-    public String readInputString(String suite, String testCase, String artifactName) {
-        return readString(suite, testCase, ArtifactType.INPUT, artifactName);
+    public String readInputString(String testCase, String artifactName) {
+        return readString(getSuite(), testCase, ArtifactType.INPUT, artifactName);
     }
 
     /**
@@ -309,13 +242,12 @@ public class TestingUtils {
      *     the test resource would be read from {@code {suite}/{testCase}/expected/TestRequest.json}, returned
      *     as a string.
      * </p>
-     * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param artifactName the filename of the artifact to read
      * @return String representation of the read resource
      */
-    public String readExpectedString(String suite, String testCase, String artifactName) {
-        return readString(suite, testCase, ArtifactType.EXPECTED, artifactName);
+    public String readExpectedString(String testCase, String artifactName) {
+        return readString(getSuite(), testCase, ArtifactType.EXPECTED, artifactName);
     }
 
     /**
@@ -327,11 +259,9 @@ public class TestingUtils {
      * </p>
      * <ul>
      *     <li>{@link TestingUtils#readInputString(String, Class)}</li>
-     *     <li>{@link TestingUtils#readInputString(String, String, Class)}</li>
-     *     <li>{@link TestingUtils#readInputString(String, String, String)}</li>
+     *     <li>{@link TestingUtils#readInputString(String, String)}</li>
      *     <li>{@link TestingUtils#readExpectedString(String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedString(String, String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedString(String, String, String)}</li>
+     *     <li>{@link TestingUtils#readExpectedString(String, String)}</li>
      * </ul>
      * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
@@ -358,24 +288,7 @@ public class TestingUtils {
      * @param actualObject the actual object to compare to an expected resource
      */
     public void assertObject(String testCase, Object actualObject) {
-        assertObject(getSuite(), testCase, actualObject);
-    }
-
-    /**
-     * <p>
-     *     Asserts that the actualObject argument is strictly equal to its corresponding test resource found in expected
-     *     resources. Infers the expected resource name from the type of the supplied object.
-     * </p>
-     * <p>
-     *     For example, calling this method with an actualObject of type {@code TestRequest} would compare the given
-     *     actualObject to the test resource loaded from {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param suite the test suite, used in the path
-     * @param testCase the test case, used in the path
-     * @param actualObject the actual object to compare to an expected resource
-     */
-    public void assertObject(String suite, String testCase, Object actualObject) {
-        assertObject(suite, testCase, artifactFileName(actualObject.getClass()), actualObject, true);
+        assertObject(testCase, artifactFileName(actualObject.getClass()), actualObject);
     }
 
     /**
@@ -388,18 +301,17 @@ public class TestingUtils {
      *     For example, calling this method with an expectedArtifactName {@code TestRequest.json} would compare the
      *     given actualObject to the test resource loaded from {@code {suite}/{testCase}/expected/TestRequest.json}.
      * </p>
-     * @param suite the test suite, used in the path
      * @param testCase the test case, used in the path
      * @param expectedArtifactName the filename of the expected artifact
      * @param actualObject the actual object to compare to an expected resource
      */
-    public void assertObject(String suite, String testCase, String expectedArtifactName, Object actualObject) {
-        assertObject(suite, testCase, expectedArtifactName, actualObject, true);
+    public void assertObject(String testCase, String expectedArtifactName, Object actualObject) {
+        assertObject(getSuite(), testCase, expectedArtifactName, actualObject, true);
     }
 
     /**
      * <p>
-     *     The full method for assertions, where strictness can be adjusted. Specifying {@code true} uses
+     *     The full method for assertions, where also strictness can be adjusted. Specifying {@code true} uses
      *     {@link JSONAssert}'s {@link JSONCompareMode#NON_EXTENSIBLE}, whereas {@code false} uses
      *     {@link JSONCompareMode#LENIENT}.
      * </p>
@@ -423,24 +335,6 @@ public class TestingUtils {
         String actualJson = objectMapper.writeValueAsString(actualObject);
         String expectedJson = readString(suite, testCase, ArtifactType.EXPECTED, expectedArtifactName);
         JSONAssert.assertEquals(expectedJson, actualJson, strict ? JSONCompareMode.NON_EXTENSIBLE : JSONCompareMode.LENIENT);
-    }
-
-    private Path getClassPathFilePath(String suite, String testCase, ArtifactType artifactType, String artifactName) {
-        Path classPathDirPath = getClassPathDirPath(suite, testCase, artifactType);
-        return classPathDirPath.resolve(artifactName);
-    }
-
-    @SneakyThrows
-    private Path getClassPathDirPath(String suite, String testCase, ArtifactType artifactType) {
-        URL suiteResource = Objects.requireNonNull(getClass().getClassLoader().getResource(suite));
-        Path suiteBasePath = Paths.get(suiteResource.toURI());
-
-        Path testDirRelativePath = Paths.get(testCase, artifactType.toString());
-        return suiteBasePath.resolve(testDirRelativePath);
-    }
-
-    private String artifactFileName(Class<?> returnObjectType) {
-        return returnObjectType.getSimpleName() + ".json";
     }
 
     /**
@@ -475,35 +369,23 @@ public class TestingUtils {
         this.suite = suite;
     }
 
-    /**
-     * <p>
-     *     Artifact type, used to build a path to a given test resource.
-     * </p>
-     */
-    public enum ArtifactType {
-        /**
-         * <p>
-         *     Means that the resource will be looked for in the input subfolder of the given suite and test case.
-         * </p>
-         */
-        INPUT,
+    // --
 
-        /**
-         * <p>
-         *     Means that the resource will be looked for in the expected subfolder of the given suite and test case.
-         * </p>
-         */
-        EXPECTED;
+    private Path getClassPathFilePath(String suite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path classPathDirPath = getClassPathDirPath(suite, testCase, artifactType);
+        return classPathDirPath.resolve(artifactName);
+    }
 
-        /**
-         * <p>
-         *     Overridden to return the lowercase value of the enum constant.
-         * </p>
-         * @return the lowercase value of the enum constant.
-         */
-        @Override
-        public String toString() {
-            return name().toLowerCase();
-        }
+    @SneakyThrows
+    private Path getClassPathDirPath(String suite, String testCase, ArtifactType artifactType) {
+        URL suiteResource = Objects.requireNonNull(getClass().getClassLoader().getResource(suite));
+        Path suiteBasePath = Paths.get(suiteResource.toURI());
+
+        Path testDirRelativePath = Paths.get(testCase, artifactType.toString());
+        return suiteBasePath.resolve(testDirRelativePath);
+    }
+
+    private String artifactFileName(Class<?> returnObjectType) {
+        return returnObjectType.getSimpleName() + ".json";
     }
 }
