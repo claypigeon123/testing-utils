@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(classes = TestApp.class)
 class TestingUtilsTest {
 
-    private static final String SUITE = TestingUtilsTest.class.getSimpleName();
+    private static final String EXPECTED_SUITE = TestingUtilsTest.class.getSimpleName();
 
     private static final String TEST_DATA = "TestData.json";
     private static final String RENAMED_TEST_DATA = "RenamedTestData.json";
@@ -55,7 +55,7 @@ class TestingUtilsTest {
     @ParameterizedTest
     @ValueSource(strings = { "INPUT", "EXPECTED" })
     void readObject(String artifactType, String testCase) {
-        performReadTest(() -> testingUtils.readObject(SUITE, testCase, ArtifactType.valueOf(artifactType), TEST_DATA, TestData.class));
+        performReadTest(() -> testingUtils.readObject(testingUtils.getSuite(), testCase, ArtifactType.valueOf(artifactType), TEST_DATA, TestData.class));
     }
 
     @Test
@@ -91,7 +91,7 @@ class TestingUtilsTest {
     @ParameterizedTest
     @ValueSource(strings = { "INPUT", "EXPECTED" })
     void readString(String artifactType, String testCase) {
-        performRawReadTest(() -> testingUtils.readString(SUITE, testCase, ArtifactType.valueOf(artifactType), TEST_DATA));
+        performRawReadTest(() -> testingUtils.readString(testingUtils.getSuite(), testCase, ArtifactType.valueOf(artifactType), TEST_DATA));
     }
 
     @Test
@@ -107,12 +107,12 @@ class TestingUtilsTest {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     void assertObject_testCaseAndArtifactNameAndStrictness(boolean strict, String testCase) {
-        testingUtils.assertObject(SUITE, testCase, TEST_DATA, TestData.create(), strict);
+        testingUtils.assertObject(testingUtils.getSuite(), testCase, TEST_DATA, TestData.create(), strict);
     }
 
     @Test
     void getSuite() {
-        assertEquals(SUITE, testingUtils.getSuite());
+        assertEquals(EXPECTED_SUITE, testingUtils.getSuite());
     }
 
     @Test
