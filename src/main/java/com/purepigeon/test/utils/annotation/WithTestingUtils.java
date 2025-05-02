@@ -1,9 +1,9 @@
 package com.purepigeon.test.utils.annotation;
 
 import com.purepigeon.test.utils.TestingUtils;
+import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
 import com.purepigeon.test.utils.extension.TestingUtilsExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -14,7 +14,7 @@ import java.lang.annotation.*;
  * </p>
  * <p>
  *     Registers the {@link TestingUtilsExtension} extension, adds a {@link TestingUtils} bean to the application
- *     context, and imports {@link JacksonAutoConfiguration}.
+ *     context via importing {@link TestingUtilsAutoConfiguration}.
  * </p>
  * <p>
  *     For example:
@@ -39,9 +39,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ExtendWith(TestingUtilsExtension.class)
-@Import({
-    JacksonAutoConfiguration.class,
-    TestingUtils.class
-})
+@Import(TestingUtilsAutoConfiguration.class)
 public @interface WithTestingUtils {
 }

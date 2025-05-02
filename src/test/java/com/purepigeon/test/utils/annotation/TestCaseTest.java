@@ -1,13 +1,13 @@
 package com.purepigeon.test.utils.annotation;
 
-import com.purepigeon.test.utils.setup.TestApp;
+import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WithTestingUtils
-@SpringBootTest(classes = TestApp.class)
+@SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
 public class TestCaseTest {
 
     @Test

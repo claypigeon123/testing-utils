@@ -1,9 +1,11 @@
-package com.purepigeon.test.utils;
+package com.purepigeon.test.utils.impl.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.purepigeon.test.utils.ArtifactType;
+import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
-import com.purepigeon.test.utils.setup.TestApp;
-import com.purepigeon.test.utils.setup.TestData;
+import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
+import com.purepigeon.test.utils.test.TestData;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @WithTestingUtils
-@SpringBootTest(classes = TestApp.class)
-class TestingUtilsTest {
+@SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+class JacksonTestingUtilsTest {
 
-    private static final String EXPECTED_SUITE = TestingUtilsTest.class.getSimpleName();
+    private static final String EXPECTED_SUITE = JacksonTestingUtilsTest.class.getSimpleName();
 
     private static final String TEST_DATA = "TestData.json";
     private static final String RENAMED_TEST_DATA = "RenamedTestData.json";
