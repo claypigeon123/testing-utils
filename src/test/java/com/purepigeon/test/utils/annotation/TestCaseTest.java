@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WithTestingUtils
 @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
-public class TestCaseTest {
+class TestCaseTest {
 
     @Test
     @TestCase("getTestCase_123")
