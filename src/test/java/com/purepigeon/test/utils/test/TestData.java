@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.setup;
+package com.purepigeon.test.utils.test;
 
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
