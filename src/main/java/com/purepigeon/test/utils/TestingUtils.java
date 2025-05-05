@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -241,7 +242,11 @@ public interface TestingUtils {
      * @param artifactName the filename of the artifact to read
      * @return String representation of the read resource
      */
-    String readString(String suite, String testCase, ArtifactType artifactType, String artifactName);
+    @SneakyThrows
+    default String readString(String suite, String testCase, ArtifactType artifactType, String artifactName) {
+        Path jsonPath = getArtifactPath(suite, testCase, artifactType, artifactName);
+        return new String(Files.readAllBytes(jsonPath));
+    }
 
     /**
      * <p>
