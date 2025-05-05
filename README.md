@@ -31,14 +31,14 @@ Maven:
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
 
 Gradle:
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils:1.0.0'
+testImplementation 'com.purepigeon.test:testing-utils:1.1.0'
 ```
 
 ## 2. Annotate test class
@@ -80,6 +80,7 @@ Let's break down each part of this path:
 ### `@WithTestingUtils`
 - Applied to a test class.
 - Registers a `TestingUtils` bean in the test application context.
+- If `useSpring` is false, works with the `TestingUtils` field declared in the test instance via reflection
 - Enables the `TestingUtilsExtension` JUnit 5 extension.
 
 ### `@Suite`
