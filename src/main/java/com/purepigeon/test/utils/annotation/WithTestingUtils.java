@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- *     Annotation to easily enable the functionalities provided by testing-utils. Requires an application context.
+ *     Annotation to easily enable the functionalities provided by Testing Utils. Requires an application context.
  * </p>
  * <p>
  *     Registers the {@link TestingUtilsExtension} extension, adds a {@link TestingUtils} bean to the application
@@ -33,6 +33,21 @@ import java.lang.annotation.*;
  *     }
  * }
  * </pre>
+ * <p>
+ *     If Spring is not on the classpath, usage is slightly different.
+ * </p>
+ * <pre>
+ * {@code
+ *     // ...
+ *     @WithTestingUtils(useSpring = false)
+ *     class SampleTest {
+ *
+ *         private final TestingUtils testingUtils = new JacksonTestingUtils(new ObjectMapper());
+ *
+ *         // ...
+ *     }
+ * }
+ * </pre>
  */
 @Inherited
 @Documented
@@ -41,4 +56,14 @@ import java.lang.annotation.*;
 @ExtendWith(TestingUtilsExtension.class)
 @Import(TestingUtilsAutoConfiguration.class)
 public @interface WithTestingUtils {
+    /**
+     * <p>
+     *     Whether to try to work with a {@link TestingUtils} instance coming from application context. Set this to
+     *     <code>false</code> if not using spring / spring is not on the classpath.
+     * </p>
+     * <p>
+     *     Default is true.
+     * </p>
+     */
+    boolean useSpring() default true;
 }

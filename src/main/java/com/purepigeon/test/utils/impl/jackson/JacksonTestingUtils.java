@@ -9,7 +9,6 @@ import lombok.SneakyThrows;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -60,7 +59,7 @@ public class JacksonTestingUtils implements TestingUtils {
 
     @Override
     public String getSuite() {
-        if (!StringUtils.hasText(suite)) {
+        if (suite == null || suite.isBlank()) {
             throw new IllegalStateException("Suite property is not set");
         }
         return suite;

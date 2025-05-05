@@ -8,8 +8,10 @@ import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -18,19 +20,24 @@ import java.util.Optional;
  *     arguments for test methods.
  * </p>
  * <p>
+ *     The extension works with or without Spring.
+ * </p>
+ * <p>
  *     See the documentation(s) of {@link Suite} and {@link TestCase} to customize behaviour.
  * </p>
  * <p>
  *     While this extension can be used directly with Junit's {@link ExtendWith} annotation, the simpler way is to just
- *     apply {@link WithTestingUtils} to a given test class instead.
+ *     apply {@link WithTestingUtils} to a given test class if Spring is being used.
  * </p>
  */
-public class TestingUtilsExtension implements TestInstancePostProcessor, ParameterResolver {
+public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeEachCallback, ParameterResolver  {
 
     /**
      * Test methods receive the test case name as this argument.
      */
     public static final String TEST_CASE_ARGUMENT_NAME = "testCase";
+
+    private String suite;
 
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
@@ -40,11 +47,47 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, Paramet
             .map(s -> s + "/" + testClass.getSimpleName())
             .orElse(testClass.getSimpleName());
 
-        ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
-        TestingUtils testingUtils = applicationContext.getBean(TestingUtils.class);
-        testingUtils.setSuite(suite);
+        WithTestingUtils annotation = testClass.getAnnotation(WithTestingUtils.class);
+
+        if (annotation == null) {
+            throw new IllegalStateException("No @WithTestingUtils annotation found");
+        }
+
+        if (Boolean.FALSE.equals(annotation.useSpring())) {
+            this.suite = suite;
+            return;
+        }
+
+        try {
+            ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
+            TestingUtils testingUtils = applicationContext.getBean(TestingUtils.class);
+            testingUtils.setSuite(suite);
+        } catch (NoClassDefFoundError e) {
+            throw new IllegalStateException("Are you using Testing Utils without spring? Make sure to provide \"useSpring = false\" in @WithTestingUtils", e);
+        }
     }
 
+    @Override
+    public void beforeEach(ExtensionContext context) throws IllegalAccessException {
+        if (suite == null) return;
+
+        Object testInstance = context.getTestInstance()
+            .orElse(null);
+
+        if (testInstance == null) return;
+
+        Field testingUtilsField = Arrays.stream(testInstance.getClass().getDeclaredFields())
+            .filter(field -> field.getType().isAssignableFrom(TestingUtils.class))
+            .findFirst()
+            .orElse(null);
+
+        if (testingUtilsField == null) return;
+
+        testingUtilsField.setAccessible(true);
+        TestingUtils testingUtils = (TestingUtils) testingUtilsField.get(testInstance);
+        testingUtils.setSuite(suite);
+        testingUtilsField.setAccessible(false);
+    }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
