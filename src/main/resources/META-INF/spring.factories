@@ -1,0 +1,2 @@
+org.springframework.test.context.TestExecutionListener=\
+  com.purepigeon.test.utils.listener.TestingUtilsTestExecutionListener
