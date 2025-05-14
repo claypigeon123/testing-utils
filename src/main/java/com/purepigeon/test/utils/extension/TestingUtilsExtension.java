@@ -1,9 +1,11 @@
 package com.purepigeon.test.utils.extension;
 
 import com.purepigeon.test.utils.TestingUtils;
+import com.purepigeon.test.utils.annotation.FixedClock;
 import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -11,13 +13,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.mockito.Mockito.when;
+
 /**
  * <p>
- *     Junit 5 extension that sets the {@code suite} property in {@link TestingUtils}, and resolves the {@code testCase}
- *     arguments for test methods.
+ *     Junit 5 extension that sets the {@code suite} property in {@link TestingUtils}, resolves the {@code testCase}
+ *     arguments for test methods, and handles {@link FixedClock} annotations.
  * </p>
  * <p>
  *     The extension works with or without Spring.
@@ -38,6 +45,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     public static final String TEST_CASE_ARGUMENT_NAME = "testCase";
 
     private String suite;
+    private boolean usesSpring = true;
+    private boolean usesFixedClock = false;
 
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
@@ -53,10 +62,15 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
             throw new IllegalStateException("No @WithTestingUtils annotation found");
         }
 
-        if (Boolean.FALSE.equals(annotation.useSpring())) {
+        if (!annotation.useSpring()) {
             this.suite = suite;
+            this.usesSpring = false;
             return;
         }
+
+        this.usesFixedClock = testClass.getAnnotation(FixedClock.class) != null || Arrays.stream(testClass.getDeclaredMethods())
+            .filter(method -> method.getAnnotation(Test.class) != null)
+            .anyMatch(method -> method.getAnnotation(FixedClock.class) != null);
 
         try {
             ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
@@ -69,24 +83,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
     @Override
     public void beforeEach(ExtensionContext context) throws IllegalAccessException {
-        if (suite == null) return;
-
-        Object testInstance = context.getTestInstance()
-            .orElse(null);
-
-        if (testInstance == null) return;
-
-        Field testingUtilsField = Arrays.stream(testInstance.getClass().getDeclaredFields())
-            .filter(field -> field.getType().isAssignableFrom(TestingUtils.class))
-            .findFirst()
-            .orElse(null);
-
-        if (testingUtilsField == null) return;
-
-        testingUtilsField.setAccessible(true);
-        TestingUtils testingUtils = (TestingUtils) testingUtilsField.get(testInstance);
-        testingUtils.setSuite(suite);
-        testingUtilsField.setAccessible(false);
+        if (!usesSpring && suite != null) setSuiteForNonSpringUsage(context);
+        if (usesSpring && usesFixedClock) mockClock(context);
     }
 
     @Override
@@ -106,5 +104,49 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
         return Optional.ofNullable(method.getAnnotation(TestCase.class))
             .map(TestCase::value)
             .orElse(method.getName());
+    }
+
+    // --
+
+    private void setSuiteForNonSpringUsage(ExtensionContext context) throws IllegalAccessException {
+        Object testInstance = context.getTestInstance()
+            .orElse(null);
+
+        if (testInstance == null) return;
+
+        Field testingUtilsField = Arrays.stream(testInstance.getClass().getDeclaredFields())
+            .filter(field -> field.getType().isAssignableFrom(TestingUtils.class))
+            .findFirst()
+            .orElse(null);
+
+        if (testingUtilsField == null) return;
+
+        testingUtilsField.setAccessible(true);
+        TestingUtils testingUtils = (TestingUtils) testingUtilsField.get(testInstance);
+        testingUtils.setSuite(suite);
+        testingUtilsField.setAccessible(false);
+    }
+
+    private void mockClock(ExtensionContext context) {
+        FixedClock classAnnotation = context.getTestClass()
+            .map(clazz -> clazz.getDeclaredAnnotation(FixedClock.class))
+            .orElse(null);
+
+        if (classAnnotation == null) {
+            throw new IllegalStateException("Also annotate your test class with @FixedClock - it cannot be used solely on the method level");
+        }
+
+        FixedClock methodAnnotation = context.getTestMethod()
+            .map(method -> method.getDeclaredAnnotation(FixedClock.class))
+            .orElse(null);
+
+        String value = Optional.of(Optional.ofNullable(methodAnnotation).orElse(classAnnotation))
+            .map(FixedClock::value)
+            .orElse(FixedClock.DEFAULT_TIME);
+
+        Instant instant = Instant.parse(value);
+        Clock clock = SpringExtension.getApplicationContext(context).getBean(Clock.class);
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
     }
 }
