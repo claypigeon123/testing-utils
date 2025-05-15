@@ -1,0 +1,17 @@
+{
+    "data": [
+        {
+            "id": "id1",
+            "content": 123.45,
+            "child": true
+        },
+        {
+            "id": "id2",
+            "content": 234.56,
+            "child": true
+        }
+    ],
+    "page": 1,
+    "limit": 20,
+    "total": 2
+}

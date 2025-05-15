@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.ArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
+import com.purepigeon.test.utils.util.TypeRef;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -34,8 +35,21 @@ public class JacksonTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
+    public <T> T readObject(String suite, String testCase, ArtifactType artifactType, String artifactName, TypeRef<T> returnObjectType) {
+        Path jsonPath = getArtifactPath(suite, testCase, artifactType, artifactName);
+        return objectMapper.readValue(new File(jsonPath.toUri()), new JacksonTypeRefConnector<>(returnObjectType));
+    }
+
+    @Override
+    @SneakyThrows
     public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
         return objectMapper.readValue(jsonContent, returnObjectType);
+    }
+
+    @Override
+    @SneakyThrows
+    public <T> T jsonToObject(String jsonContent, TypeRef<T> returnObjectType) {
+        return objectMapper.readValue(jsonContent, new JacksonTypeRefConnector<>(returnObjectType));
     }
 
     @Override
