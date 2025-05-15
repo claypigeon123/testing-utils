@@ -11,6 +11,10 @@ import java.time.Clock;
  *     date-time.
  * </p>
  * <p>
+ *     Can be used on the type level or method level; however, method level usage is only supported if there is a type
+ *     level annotation present as well.
+ * </p>
+ * <p>
  *     Requires an application context and usage of {@link WithTestingUtils}.
  * </p>
  */
