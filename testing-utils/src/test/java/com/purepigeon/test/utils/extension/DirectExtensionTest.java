@@ -1,6 +1,5 @@
-package com.purepigeon.test.utils.raw;
+package com.purepigeon.test.utils.extension;
 
-import com.purepigeon.test.utils.extension.TestingUtilsExtension;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
