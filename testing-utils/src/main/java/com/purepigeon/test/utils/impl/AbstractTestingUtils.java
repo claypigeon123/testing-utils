@@ -1,7 +1,6 @@
 package com.purepigeon.test.utils.impl;
 
 import com.purepigeon.test.utils.TestingUtils;
-import org.springframework.lang.Nullable;
 
 /**
  * <p>
@@ -13,7 +12,6 @@ import org.springframework.lang.Nullable;
  */
 public abstract class AbstractTestingUtils implements TestingUtils {
 
-    @Nullable
     protected String suite;
 
     @Override
@@ -25,7 +23,7 @@ public abstract class AbstractTestingUtils implements TestingUtils {
     }
 
     @Override
-    public void setSuite(@Nullable String suite) {
+    public void setSuite(String suite) {
         this.suite = suite;
     }
 }
