@@ -62,28 +62,24 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
             throw new IllegalStateException("No @WithTestingUtils annotation found");
         }
 
-        if (!annotation.useSpring()) {
-            this.suite = suite;
-            this.usesSpring = false;
-            return;
-        }
-
-        this.usesFixedClock = testClass.getAnnotation(FixedClock.class) != null || Arrays.stream(testClass.getDeclaredMethods())
-            .filter(method -> method.getAnnotation(Test.class) != null)
-            .anyMatch(method -> method.getAnnotation(FixedClock.class) != null);
+        this.usesFixedClock = testClass.isAnnotationPresent(FixedClock.class) || Arrays.stream(testClass.getDeclaredMethods())
+            .filter(method -> method.isAnnotationPresent(Test.class))
+            .anyMatch(method -> method.isAnnotationPresent(FixedClock.class));
 
         try {
             ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
             TestingUtils testingUtils = applicationContext.getBean(TestingUtils.class);
             testingUtils.setSuite(suite);
         } catch (NoClassDefFoundError e) {
-            throw new IllegalStateException("Are you using Testing Utils without spring? Make sure to provide \"useSpring = false\" in @WithTestingUtils", e);
+            this.usesSpring = false;
+        } finally {
+            this.suite = suite;
         }
     }
 
     @Override
     public void beforeEach(ExtensionContext context) throws IllegalAccessException {
-        if (!usesSpring && suite != null) setSuiteForNonSpringUsage(context);
+        if (!usesSpring) setSuiteForNonSpringUsage(context);
         if (usesSpring && usesFixedClock) mockClock(context);
     }
 

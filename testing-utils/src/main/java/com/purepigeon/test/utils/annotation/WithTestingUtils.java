@@ -39,7 +39,7 @@ import java.lang.annotation.*;
  * <pre>
  * {@code
  *     // ...
- *     @WithTestingUtils(useSpring = false)
+ *     @WithTestingUtils
  *     class SampleTest {
  *
  *         private final TestingUtils testingUtils = new JacksonTestingUtils(new ObjectMapper());
@@ -56,14 +56,4 @@ import java.lang.annotation.*;
 @ExtendWith(TestingUtilsExtension.class)
 @Import(TestingUtilsAutoConfiguration.class)
 public @interface WithTestingUtils {
-    /**
-     * <p>
-     *     Whether to try to work with a {@link TestingUtils} instance coming from application context. Set this to
-     *     <code>false</code> if not using spring / spring is not on the classpath.
-     * </p>
-     * <p>
-     *     Default is true.
-     * </p>
-     */
-    boolean useSpring() default true;
 }

@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.purepigeon.test.integration</groupId>
+    <groupId>com.purepigeon.test.utils.integration</groupId>
     <artifactId>integration-test-parent</artifactId>
     <name>Integration Test Parent</name>
     <modules>
