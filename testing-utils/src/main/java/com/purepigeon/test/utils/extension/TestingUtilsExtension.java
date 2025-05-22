@@ -56,12 +56,6 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
             .map(s -> s + "/" + testClass.getSimpleName())
             .orElse(testClass.getSimpleName());
 
-        WithTestingUtils annotation = testClass.getAnnotation(WithTestingUtils.class);
-
-        if (annotation == null) {
-            throw new IllegalStateException("No @WithTestingUtils annotation found");
-        }
-
         this.usesFixedClock = testClass.isAnnotationPresent(FixedClock.class) || Arrays.stream(testClass.getDeclaredMethods())
             .filter(method -> method.isAnnotationPresent(Test.class))
             .anyMatch(method -> method.isAnnotationPresent(FixedClock.class));
@@ -80,7 +74,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     @Override
     public void beforeEach(ExtensionContext context) throws IllegalAccessException {
         if (!usesSpring) setSuiteForNonSpringUsage(context);
-        if (usesSpring && usesFixedClock) mockClock(context);
+        if (usesFixedClock && usesSpring) mockSpringClock(context);
+        if (usesFixedClock && !usesSpring) mockPlainClock(context);
     }
 
     @Override
@@ -105,16 +100,10 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     // --
 
     private void setSuiteForNonSpringUsage(ExtensionContext context) throws IllegalAccessException {
-        Object testInstance = context.getTestInstance()
-            .orElse(null);
-
+        Object testInstance = context.getTestInstance().orElse(null);
         if (testInstance == null) return;
 
-        Field testingUtilsField = Arrays.stream(testInstance.getClass().getDeclaredFields())
-            .filter(field -> field.getType().isAssignableFrom(TestingUtils.class))
-            .findFirst()
-            .orElse(null);
-
+        Field testingUtilsField = getTestClassField(testInstance, TestingUtils.class).orElse(null);
         if (testingUtilsField == null) return;
 
         testingUtilsField.setAccessible(true);
@@ -123,7 +112,40 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
         testingUtilsField.setAccessible(false);
     }
 
-    private void mockClock(ExtensionContext context) {
+    private void mockSpringClock(ExtensionContext context) {
+        Instant instant = getFixedClockValue(context);
+
+        Clock clock = SpringExtension.getApplicationContext(context).getBean(Clock.class);
+        mockClock(clock, instant);
+    }
+
+    private void mockPlainClock(ExtensionContext context) throws IllegalAccessException {
+        Instant instant = getFixedClockValue(context);
+
+        Object testInstance = context.getTestInstance().orElse(null);
+        if (testInstance == null) return;
+
+        Field clockField = getTestClassField(testInstance, Clock.class).orElse(null);
+        if (clockField == null) return;
+
+        clockField.setAccessible(true);
+        Clock clock = (Clock) clockField.get(testInstance);
+        mockClock(clock, instant);
+        clockField.setAccessible(false);
+    }
+
+    private Optional<Field> getTestClassField(Object testInstance, Class<?> clazz) {
+        return Arrays.stream(testInstance.getClass().getDeclaredFields())
+            .filter(field -> field.getType().isAssignableFrom(clazz))
+            .findFirst();
+    }
+
+    private void mockClock(Clock clock, Instant instant) {
+        when(clock.instant()).thenReturn(instant);
+        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
+    }
+
+    private Instant getFixedClockValue(ExtensionContext context) {
         FixedClock classAnnotation = context.getTestClass()
             .map(clazz -> clazz.getDeclaredAnnotation(FixedClock.class))
             .orElse(null);
@@ -138,11 +160,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
         String value = Optional.of(Optional.ofNullable(methodAnnotation).orElse(classAnnotation))
             .map(FixedClock::value)
-            .orElse(FixedClock.DEFAULT_TIME);
+            .orElse(FixedClock.DEFAULT_INSTANT);
 
-        Instant instant = Instant.parse(value);
-        Clock clock = SpringExtension.getApplicationContext(context).getBean(Clock.class);
-        when(clock.instant()).thenReturn(instant);
-        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
+        return Instant.parse(value);
     }
 }

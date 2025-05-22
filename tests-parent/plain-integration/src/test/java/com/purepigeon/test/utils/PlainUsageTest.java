@@ -1,7 +1,6 @@
-package com.purepigeon.test.utils.integration;
+package com.purepigeon.test.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
@@ -12,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Suite("plain")
 @WithTestingUtils
-class PlainTest {
+class PlainUsageTest {
 
-    private static final String EXPECTED_SUITE = "plain/%s".formatted(PlainTest.class.getSimpleName());
+    private static final String EXPECTED_SUITE = "plain/%s".formatted(PlainUsageTest.class.getSimpleName());
 
     private final TestingUtils testingUtils = new JacksonTestingUtils(new ObjectMapper());
 

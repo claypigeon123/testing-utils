@@ -29,15 +29,15 @@ public @interface FixedClock {
      *     The default ISO date-time value for the fixed {@link Clock} bean.
      * </p>
      */
-    String DEFAULT_TIME = "2025-01-10T12:30:15.123Z";
+    String DEFAULT_INSTANT = "2025-01-10T12:30:15.123Z";
 
     /**
      * <p>
      *     The ISO date-time value to fix the {@link Clock} bean to.
      * </p>
      * <p>
-     *     Default is {@link FixedClock#DEFAULT_TIME}.
+     *     Default is {@link FixedClock#DEFAULT_INSTANT}.
      * </p>
      */
-    String value() default DEFAULT_TIME;
+    String value() default DEFAULT_INSTANT;
 }

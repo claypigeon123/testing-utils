@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.purepigeon.test.utils.integration</groupId>
-        <artifactId>integration-test-parent</artifactId>
+        <groupId>com.purepigeon.test</groupId>
+        <artifactId>tests-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
@@ -14,20 +14,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.purepigeon.test</groupId>
             <artifactId>testing-utils</artifactId>
             <version>${testing-utils.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

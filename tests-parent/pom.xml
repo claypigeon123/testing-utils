@@ -9,12 +9,15 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.purepigeon.test.utils.integration</groupId>
-    <artifactId>integration-test-parent</artifactId>
-    <name>Integration Test Parent</name>
-    <modules>
-        <module>plain-integration</module>
-    </modules>
+    <artifactId>tests-parent</artifactId>
+    <name>Tests Parent</name>
     <packaging>pom</packaging>
 
+    <modules>
+        <!-- test modules -->
+        <module>plain-integration</module>
+
+        <!-- aggregation -->
+        <module>coverage-report</module>
+    </modules>
 </project>

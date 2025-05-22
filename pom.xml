@@ -53,13 +53,14 @@
         <!-- plugins -->
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
         <central-publishing-plugin.version>0.7.0</central-publishing-plugin.version>
     </properties>
 
     <modules>
         <module>testing-utils</module>
-        <module>integration-test-parent</module>
+        <module>tests-parent</module>
     </modules>
 
     <profiles>
@@ -133,6 +134,22 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <configuration>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven-gpg-plugin.version}</version>
@@ -162,9 +179,11 @@
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
                     <excludeArtifacts>
-                        <excludeArtifact>integration-test-parent</excludeArtifact>
+                        <excludeArtifact>tests-parent</excludeArtifact>
                         <excludeArtifact>plain-integration</excludeArtifact>
+                        <excludeArtifact>coverage-report</excludeArtifact>
                     </excludeArtifacts>
+                    <skipPublishing>true</skipPublishing>
                 </configuration>
             </plugin>
         </plugins>

@@ -57,14 +57,6 @@
             <artifactId>junit-platform-testkit</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- integration tests -->
-        <dependency>
-            <groupId>com.purepigeon.test.integration</groupId>
-            <artifactId>plain-integration</artifactId>
-            <version>${testing-utils.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

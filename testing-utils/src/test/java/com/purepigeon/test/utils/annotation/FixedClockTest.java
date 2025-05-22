@@ -50,7 +50,7 @@ class FixedClockTest {
 
         @Test
         void testFixedClock() {
-            assertEquals(FixedClock.DEFAULT_TIME, DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock)));
+            assertEquals(FixedClock.DEFAULT_INSTANT, DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock)));
         }
     }
 
@@ -81,7 +81,7 @@ class FixedClockTest {
         @Test
         @FixedClock
         void testFixedClock() {
-            assertEquals(FixedClock.DEFAULT_TIME, DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock)));
+            assertEquals(FixedClock.DEFAULT_INSTANT, DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock)));
         }
     }
 
