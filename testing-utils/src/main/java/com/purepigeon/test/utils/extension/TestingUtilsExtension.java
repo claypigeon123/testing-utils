@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
  * </p>
  * <p>
  *     While this extension can be used directly with Junit's {@link ExtendWith} annotation, the simpler way is to just
- *     apply {@link WithTestingUtils} to a given test class if Spring is being used.
+ *     apply {@link WithTestingUtils} to a given test class.
  * </p>
  */
 public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeEachCallback, ParameterResolver  {

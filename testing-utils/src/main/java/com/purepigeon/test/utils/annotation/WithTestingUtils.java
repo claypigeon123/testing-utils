@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 
 /**
  * <p>
- *     Annotation to easily enable the functionalities provided by Testing Utils. Requires an application context.
+ *     Annotation to easily enable the functionalities provided by Testing Utils.
  * </p>
  * <p>
  *     Registers the {@link TestingUtilsExtension} extension, adds a {@link TestingUtils} bean to the application
@@ -34,7 +34,7 @@ import java.lang.annotation.*;
  * }
  * </pre>
  * <p>
- *     If Spring is not on the classpath, usage is slightly different.
+ *     If Spring is not on the classpath, the initialization of a {@link TestingUtils} has to be done manually:
  * </p>
  * <pre>
  * {@code

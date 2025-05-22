@@ -15,7 +15,7 @@ import java.time.Clock;
  *     level annotation present as well.
  * </p>
  * <p>
- *     Requires an application context and usage of {@link WithTestingUtils}.
+ *     Requires usage of {@link WithTestingUtils}.
  * </p>
  */
 @Inherited

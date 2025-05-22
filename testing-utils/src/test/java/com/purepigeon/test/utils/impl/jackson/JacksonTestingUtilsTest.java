@@ -3,17 +3,19 @@ package com.purepigeon.test.utils.impl.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.ArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
+import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
 import com.purepigeon.test.utils.test.ChildGenericTestData;
 import com.purepigeon.test.utils.test.TestData;
 import com.purepigeon.test.utils.test.TestDataCollection;
-import com.purepigeon.test.utils.util.TypeRef;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -117,9 +119,12 @@ class JacksonTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void assertObject_testCaseAndArtifactNameAndStrictness(boolean strict, String testCase) {
-        testingUtils.assertObject(testingUtils.getSuite(), testCase, TEST_DATA, TestData.create(), strict);
+    @CsvSource({
+        "NON_EXTENSIBLE",
+        "STRICT"
+    })
+    void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
+        testingUtils.assertObject(testingUtils.getSuite(), testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.purepigeon.test.utils.impl.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.purepigeon.test.utils.util.TypeRef;
+import com.purepigeon.test.utils.TypeRef;
 
 import java.lang.reflect.Type;
 

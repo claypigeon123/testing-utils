@@ -1,8 +1,7 @@
 package com.purepigeon.test.utils;
 
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
-import com.purepigeon.test.utils.extension.TestingUtilsExtension;
-import com.purepigeon.test.utils.util.TypeRef;
+import com.purepigeon.test.utils.impl.AbstractTestingUtils;
 import lombok.SneakyThrows;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -17,10 +16,14 @@ import java.util.Objects;
  *     Provides various testing utilities, including:
  * </p>
  * <ul>
- *     <li>Loading input / expected test resources as objects or strings in an organized fashion</li>
+ *     <li>Loading input / expected artifacts as objects or strings from test resources</li>
  *     <li>Asserting on test results using expected artifacts from test resources</li>
- *     <li>Converting JSON strings to objects</li>
+ *     <li>Converting JSON strings to objects / vice versa</li>
  * </ul>
+ * <p>
+ *     Custom implementations of this interface should extend {@link AbstractTestingUtils} to inherit handling for
+ *     'suite', which is likely common, regardless of implementation.
+ * </p>
  */
 public interface TestingUtils {
     /**
@@ -396,14 +399,12 @@ public interface TestingUtils {
      * @param actualObject the actual object to compare to an expected resource
      */
     default void assertObject(String testCase, String expectedArtifactName, Object actualObject) {
-        assertObject(getSuite(), testCase, expectedArtifactName, actualObject, true);
+        assertObject(getSuite(), testCase, expectedArtifactName, actualObject, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     /**
      * <p>
-     *     The full method for assertions, where also strictness can be adjusted. Specifying {@code true} uses
-     *     {@link JSONAssert}'s {@link JSONCompareMode#NON_EXTENSIBLE}, whereas {@code false} uses
-     *     {@link JSONCompareMode#LENIENT}.
+     *     The full method for assertions, where also strictness can be adjusted.
      * </p>
      * <p>
      *     Asserts that the actualObject argument is equal to a test resource found in expected resources.
@@ -418,17 +419,21 @@ public interface TestingUtils {
      * @param testCase the test case, used in the path
      * @param expectedArtifactName the filename of the expected artifact
      * @param actualObject the actual object to compare to an expected resource
-     * @param strict to adjust comparison mode
+     * @param mode to adjust comparison mode
      */
-    void assertObject(String suite, String testCase, String expectedArtifactName, Object actualObject, boolean strict);
+    @SneakyThrows
+    default void assertObject(String suite, String testCase, String expectedArtifactName, Object actualObject, JSONCompareMode mode) {
+        String actualJson = objectToJson(actualObject);
+        String expectedJson = readString(suite, testCase, ArtifactType.EXPECTED, expectedArtifactName);
+        JSONAssert.assertEquals(expectedJson, actualJson, mode);
+    }
 
     /**
      * <p>
      *     Retrieve the suite value of this instance.
      * </p>
      * <p>
-     *     When using {@link WithTestingUtils} or {@link TestingUtilsExtension} directly, the suite value is
-     *     automatically set.
+     *     When using {@link WithTestingUtils}, the suite value is automatically set.
      * </p>
      * @return the full test suite name / path.
      */
@@ -439,8 +444,8 @@ public interface TestingUtils {
      *     Set the suite value of this instance.
      * </p>
      * <p>
-     *     When using {@link WithTestingUtils} or {@link TestingUtilsExtension} directly, the suite value is
-     *     automatically set, with no need to manually call this method.
+     *     When using {@link WithTestingUtils}, the suite value is automatically set, with no need to
+     *     manually call this method.
      * </p>
      * @param suite the new value for suite
      */

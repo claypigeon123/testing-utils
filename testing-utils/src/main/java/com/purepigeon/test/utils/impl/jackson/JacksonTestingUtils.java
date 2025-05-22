@@ -3,13 +3,11 @@ package com.purepigeon.test.utils.impl.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.ArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
+import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
-import com.purepigeon.test.utils.util.TypeRef;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -56,13 +54,5 @@ public class JacksonTestingUtils extends AbstractTestingUtils {
     @SneakyThrows
     public String objectToJson(Object object) {
         return objectMapper.writeValueAsString(object);
-    }
-
-    @Override
-    @SneakyThrows
-    public void assertObject(String suite, String testCase, String expectedArtifactName, Object actualObject, boolean strict) {
-        String actualJson = objectMapper.writeValueAsString(actualObject);
-        String expectedJson = readString(suite, testCase, ArtifactType.EXPECTED, expectedArtifactName);
-        JSONAssert.assertEquals(expectedJson, actualJson, strict ? JSONCompareMode.NON_EXTENSIBLE : JSONCompareMode.LENIENT);
     }
 }

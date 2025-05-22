@@ -4,7 +4,7 @@ import com.purepigeon.test.utils.TestingUtils;
 
 /**
  * <p>
- *     Abstract class that encapsulates some functionalities that are likely common, regardless of binding.
+ *     Abstract class that encapsulates 'suite' handling, which is likely common, regardless of implementation.
  * </p>
  * <p>
  *     Classes that want to implement the {@link TestingUtils} interface should extend this class instead.
