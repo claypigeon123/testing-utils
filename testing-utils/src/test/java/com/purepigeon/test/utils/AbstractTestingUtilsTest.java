@@ -1,5 +1,6 @@
 package com.purepigeon.test.utils;
 
+import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
 import com.purepigeon.test.utils.test.ChildGenericTestData;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @WithTestingUtils
+@Suite(value = "TestingUtilsTest", appendClassName = false)
 @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
 public abstract class AbstractTestingUtilsTest {
 
@@ -29,6 +31,8 @@ public abstract class AbstractTestingUtilsTest {
 
     protected TestingUtils testingUtils;
     protected abstract void setTestingUtils(TestingUtils testingUtils);
+
+    public abstract void assertImpl();
 
     @Test
     void readInputObject_testCaseOnly(String testCase) {
@@ -115,6 +119,11 @@ public abstract class AbstractTestingUtilsTest {
     })
     void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
         testingUtils.assertObject(testingUtils.getSuite(), testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
+    }
+
+    @Test
+    void getSuite() {
+        assertEquals("TestingUtilsTest", testingUtils.getSuite());
     }
 
     @Test
