@@ -2,6 +2,8 @@ package com.purepigeon.test.utils;
 
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
+import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
+import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
 import lombok.SneakyThrows;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -24,6 +26,18 @@ import java.util.Objects;
  *     Custom implementations of this interface should extend {@link AbstractTestingUtils} to inherit handling for
  *     'suite', which is likely common, regardless of implementation.
  * </p>
+ * <hr />
+ * <p>
+ *     See the {@link WithTestingUtils} annotation for more information on how to facilitate usage.
+ * </p>
+ * <hr />
+ * <p>
+ *     This library provides two implementations, including Spring Boot autoconfiguration:
+ * </p>
+ * <ul>
+ *     <li>{@link JacksonTestingUtils}</li>
+ *     <li>{@link GsonTestingUtils}</li>
+ * </ul>
  */
 public interface TestingUtils {
     /**

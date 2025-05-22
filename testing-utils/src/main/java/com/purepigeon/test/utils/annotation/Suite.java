@@ -60,8 +60,20 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 public @interface Suite {
     /**
-     * Prefix to apply to {@link TestingUtils#getSuite()}
-     * @return The given prefix
+     * <p>
+     *     The prefix to apply to the suite value returned by {@link TestingUtils#getSuite()}.
+     * </p>
+     * <p>
+     *     If {@link Suite#appendClassName()} is set to {@code false}, the value provided here is no longer just a
+     *     prefix, but rather the entire suite value.
+     * </p>
+     * @return The given prefix / suite value. Defaults to an empty string.
      */
-    String value();
+    String value() default "";
+
+    /**
+     * Whether to append a forward slash and the simple classname of the test class to the suite value.
+     * @return The given append flag. Defaults to {@code true}.
+     */
+    boolean appendClassName() default true;
 }

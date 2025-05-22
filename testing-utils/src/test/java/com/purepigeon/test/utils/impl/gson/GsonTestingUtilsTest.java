@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.impl.jackson;
+package com.purepigeon.test.utils.impl.gson;
 
 import com.purepigeon.test.utils.AbstractTestingUtilsTest;
 import com.purepigeon.test.utils.TestingUtils;
@@ -11,17 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @Suite(value = "TestingUtilsTest", appendClassName = false)
-public class JacksonTestingUtilsTest extends AbstractTestingUtilsTest {
+public class GsonTestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Override
     @Autowired
-    protected void setTestingUtils(@Qualifier("jacksonTestingUtils") TestingUtils testingUtils) {
+    protected void setTestingUtils(@Qualifier("gsonTestingUtils") TestingUtils testingUtils) {
         this.testingUtils = testingUtils;
     }
 
     @Test
     void assertImpl() {
-        assertInstanceOf(JacksonTestingUtils.class, testingUtils);
+        assertInstanceOf(GsonTestingUtils.class, testingUtils);
     }
 
     @Test

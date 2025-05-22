@@ -34,7 +34,8 @@ import java.lang.annotation.*;
  * }
  * </pre>
  * <p>
- *     If Spring is not on the classpath, the initialization of a {@link TestingUtils} has to be done manually:
+ *     If Spring is not on the classpath, the initialization of a {@link TestingUtils} has to be done manually, for
+ *     example, to use Jackson for serialization and deserialization:
  * </p>
  * <pre>
  * {@code

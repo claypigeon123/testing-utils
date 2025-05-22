@@ -51,10 +51,11 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
-        String suite = Optional.ofNullable(testClass.getAnnotation(Suite.class))
-            .map(Suite::value)
-            .map(s -> s + "/" + testClass.getSimpleName())
-            .orElse(testClass.getSimpleName());
+
+        Suite suiteAnnotation = testClass.getAnnotation(Suite.class);
+        String suite = suiteAnnotation != null
+            ? suiteAnnotation.value() + (suiteAnnotation.appendClassName() ? "/" + testClass.getSimpleName() : "")
+            : testClass.getSimpleName();
 
         this.usesFixedClock = testClass.isAnnotationPresent(FixedClock.class) || Arrays.stream(testClass.getDeclaredMethods())
             .filter(method -> method.isAnnotationPresent(Test.class))
@@ -62,8 +63,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
         try {
             ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
-            TestingUtils testingUtils = applicationContext.getBean(TestingUtils.class);
-            testingUtils.setSuite(suite);
+            applicationContext.getBeansOfType(TestingUtils.class).values()
+                .forEach(instance -> instance.setSuite(suite));
         } catch (NoClassDefFoundError e) {
             this.usesSpring = false;
         } finally {

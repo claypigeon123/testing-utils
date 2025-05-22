@@ -5,6 +5,12 @@ import com.purepigeon.test.utils.TypeRef;
 
 import java.lang.reflect.Type;
 
+/**
+ * <p>
+ *     Helper class to connect Testing utils' {@link TypeRef} to Jackson's {@link TypeReference}.
+ * </p>
+ * @param <T> The referenced type
+ */
 public class JacksonTypeRefConnector<T> extends TypeReference<T> {
 
     private final Type type;
