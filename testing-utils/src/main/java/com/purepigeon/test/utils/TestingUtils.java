@@ -489,7 +489,7 @@ public interface TestingUtils {
      * @param type the class to return a default filename for
      * @return The resolved filename
      */
-    default <T> String artifactFileName(TypeRef<T> type) {
+    default String artifactFileName(TypeRef<?> type) {
         return type.getSimpleName() + ".json";
     }
 
