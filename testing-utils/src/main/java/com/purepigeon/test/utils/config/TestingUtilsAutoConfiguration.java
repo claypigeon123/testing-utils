@@ -20,8 +20,11 @@ import org.springframework.context.annotation.Primary;
  *     Autoconfiguration for {@link TestingUtils}, when used with Spring Boot. See {@link WithTestingUtils}.
  * </p>
  * <p>
- *     If Jackson is on the classpath, a {@link TestingUtils} bean will be registered that uses the Jackson
- *     {@link ObjectMapper} for serialization and deserialization.
+ *     Capable of registering a {@link TestingUtils} bean of type {@link JacksonTestingUtils} and
+ *     {@link GsonTestingUtils}, depending on what is available on the classpath.
+ * </p>
+ * <p>
+ *     Important to note that the Jackson implementation bean is marked with the {@link Primary} annotation.
  * </p>
  */
 @AutoConfiguration
