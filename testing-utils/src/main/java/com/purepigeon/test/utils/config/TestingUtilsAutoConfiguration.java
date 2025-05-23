@@ -10,6 +10,7 @@ import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
 import jakarta.json.bind.Jsonb;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
@@ -33,6 +34,9 @@ import org.springframework.context.annotation.Primary;
 @AutoConfiguration
 public class TestingUtilsAutoConfiguration {
 
+    private static final String JSONB_BIND_SPI = "classpath:META-INF/services/jakarta.json.bind.spi.JsonbProvider";
+    private static final String JSONB_SPI = "classpath:META-INF/services/jakarta.json.spi.JsonProvider";
+
     @Configuration
     @ConditionalOnClass(ObjectMapper.class)
     @Import(JacksonAutoConfiguration.class)
@@ -55,8 +59,9 @@ public class TestingUtilsAutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(Jsonb.class)
     @Import(JsonbAutoConfiguration.class)
+    @ConditionalOnClass(Jsonb.class)
+    @ConditionalOnResource(resources = { JSONB_BIND_SPI, JSONB_SPI })
     public static class JsonbConfiguration {
         @Bean
         public TestingUtils jsonbTestingUtils(Jsonb jsonb) {

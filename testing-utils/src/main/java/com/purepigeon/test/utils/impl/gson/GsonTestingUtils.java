@@ -1,7 +1,6 @@
 package com.purepigeon.test.utils.impl.gson;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.purepigeon.test.utils.ArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
@@ -34,10 +33,9 @@ public class GsonTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
-    @SuppressWarnings("unchecked")
     public <T> T readObject(String suite, String testCase, ArtifactType artifactType, String artifactName, TypeRef<T> returnObjectType) {
         Path jsonPath = getArtifactPath(suite, testCase, artifactType, artifactName);
-        return gson.fromJson(Files.readString(jsonPath), (TypeToken<T>) TypeToken.get(returnObjectType.getType()));
+        return gson.fromJson(Files.readString(jsonPath), returnObjectType.getType());
     }
 
     @Override
@@ -48,9 +46,8 @@ public class GsonTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
-    @SuppressWarnings("unchecked")
     public <T> T jsonToObject(String jsonContent, TypeRef<T> returnObjectType) {
-        return gson.fromJson(jsonContent, (TypeToken<T>) TypeToken.get(returnObjectType.getType()));
+        return gson.fromJson(jsonContent, returnObjectType.getType());
     }
 
     @Override
