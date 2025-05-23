@@ -4,6 +4,7 @@ import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
 import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
+import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
 import lombok.SneakyThrows;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -32,11 +33,12 @@ import java.util.Objects;
  * </p>
  * <hr />
  * <p>
- *     This library provides two implementations, including Spring Boot autoconfiguration:
+ *     This library provides three implementations, including Spring Boot autoconfiguration:
  * </p>
  * <ul>
  *     <li>{@link JacksonTestingUtils}</li>
  *     <li>{@link GsonTestingUtils}</li>
+ *     <li>{@link JsonbTestingUtils}</li>
  * </ul>
  */
 public interface TestingUtils {

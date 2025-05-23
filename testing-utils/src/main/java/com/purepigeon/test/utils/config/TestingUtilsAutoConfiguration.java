@@ -6,10 +6,13 @@ import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
+import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
+import jakarta.json.bind.Jsonb;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -20,8 +23,8 @@ import org.springframework.context.annotation.Primary;
  *     Autoconfiguration for {@link TestingUtils}, when used with Spring Boot. See {@link WithTestingUtils}.
  * </p>
  * <p>
- *     Capable of registering a {@link TestingUtils} bean of type {@link JacksonTestingUtils} and
- *     {@link GsonTestingUtils}, depending on what is available on the classpath.
+ *     Capable of registering a {@link TestingUtils} bean of type {@link JacksonTestingUtils},
+ *     {@link GsonTestingUtils}, and {@link JsonbTestingUtils}, depending on what is available on the classpath.
  * </p>
  * <p>
  *     Important to note that the Jackson implementation bean is marked with the {@link Primary} annotation.
@@ -48,6 +51,16 @@ public class TestingUtilsAutoConfiguration {
         @Bean
         public TestingUtils gsonTestingUtils(Gson gson) {
             return new GsonTestingUtils(gson);
+        }
+    }
+
+    @Configuration
+    @ConditionalOnClass(Jsonb.class)
+    @Import(JsonbAutoConfiguration.class)
+    public static class JsonbConfiguration {
+        @Bean
+        public TestingUtils jsonbTestingUtils(Jsonb jsonb) {
+            return new JsonbTestingUtils(jsonb);
         }
     }
 }
