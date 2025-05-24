@@ -218,7 +218,6 @@
                         <excludeArtifact>plain-integration</excludeArtifact>
                         <excludeArtifact>coverage-report</excludeArtifact>
                     </excludeArtifacts>
-                    <skipPublishing>true</skipPublishing>
                 </configuration>
             </plugin>
         </plugins>
