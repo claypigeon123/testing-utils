@@ -26,6 +26,11 @@
         </license>
     </licenses>
 
+    <organization>
+        <name>Purepigeon</name>
+        <url>https://purepigeon.com</url>
+    </organization>
+
     <developers>
         <developer>
             <id>claypigeon123</id>
