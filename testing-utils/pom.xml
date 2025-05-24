@@ -11,6 +11,7 @@
 
     <artifactId>testing-utils</artifactId>
     <name>Testing Utils</name>
+    <description>Testing utilities for java</description>
 
     <dependencies>
         <dependency>
