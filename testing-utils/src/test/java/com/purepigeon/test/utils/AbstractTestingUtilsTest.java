@@ -22,8 +22,8 @@ package com.purepigeon.test.utils;
 
 import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
-import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
 import com.purepigeon.test.utils.test.ChildGenericTestData;
+import com.purepigeon.test.utils.test.TestApp;
 import com.purepigeon.test.utils.test.TestData;
 import com.purepigeon.test.utils.test.TestDataCollection;
 import lombok.SneakyThrows;
@@ -42,8 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @WithTestingUtils
+@SpringBootTest(classes = TestApp.class)
 @Suite(value = "TestingUtilsTest", appendClassName = false)
-@SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
 public abstract class AbstractTestingUtilsTest {
 
     private static final String TEST_DATA = "TestData.json";

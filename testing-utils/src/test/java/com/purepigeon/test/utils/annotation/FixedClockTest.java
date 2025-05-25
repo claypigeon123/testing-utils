@@ -20,7 +20,7 @@ package com.purepigeon.test.utils.annotation;
  * #L%
  */
 
-import com.purepigeon.test.utils.config.TestingUtilsAutoConfiguration;
+import com.purepigeon.test.utils.test.TestApp;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class FixedClockTest {
 
     @Nested
     @WithTestingUtils
-    @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+    @SpringBootTest(classes = TestApp.class)
     class NoFixedClock {
 
         @Autowired(required = false)
@@ -62,7 +62,7 @@ class FixedClockTest {
     @Nested
     @FixedClock
     @WithTestingUtils
-    @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+    @SpringBootTest(classes = TestApp.class)
     class ClassLevel_DefaultDate {
 
         @Autowired
@@ -77,7 +77,7 @@ class FixedClockTest {
     @Nested
     @FixedClock(CUSTOM_DATE)
     @WithTestingUtils
-    @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+    @SpringBootTest(classes = TestApp.class)
     class ClassLevel_CustomDate {
 
         @Autowired
@@ -92,7 +92,7 @@ class FixedClockTest {
     @Nested
     @FixedClock("1990-01-01T12:00:00.000Z")
     @WithTestingUtils
-    @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+    @SpringBootTest(classes = TestApp.class)
     class MethodLevel_DefaultDate {
 
         @Autowired
@@ -108,7 +108,7 @@ class FixedClockTest {
     @Nested
     @FixedClock("1990-01-01T12:00:00.000Z")
     @WithTestingUtils
-    @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+    @SpringBootTest(classes = TestApp.class)
     class MethodLevel_CustomDate {
 
         @Autowired
@@ -143,7 +143,7 @@ class FixedClockTest {
         @Nested
         @Disabled("Excluded from automatic global test run")
         @WithTestingUtils
-        @SpringBootTest(classes = TestingUtilsAutoConfiguration.class)
+        @SpringBootTest(classes = TestApp.class)
         class InvalidUsageTest {
 
             @Test
