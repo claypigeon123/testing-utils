@@ -72,10 +72,7 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
 
-        Suite suiteAnnotation = testClass.getAnnotation(Suite.class);
-        String suite = suiteAnnotation != null
-            ? suiteAnnotation.value() + (suiteAnnotation.appendClassName() ? "/" + testClass.getSimpleName() : "")
-            : testClass.getSimpleName();
+        String suite = resolveSuite(testClass);
 
         this.usesFixedClock = testClass.isAnnotationPresent(FixedClock.class) || Arrays.stream(testClass.getDeclaredMethods())
             .filter(method -> method.isAnnotationPresent(Test.class))
@@ -119,6 +116,19 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     }
 
     // --
+
+    private String resolveSuite(Class<?> testClass) {
+        Suite suiteAnnotation = testClass.getAnnotation(Suite.class);
+
+        if (suiteAnnotation == null) {
+            return testClass.getSimpleName();
+        }
+        if (suiteAnnotation.value().isBlank()) {
+            throw new IllegalStateException("@Suite value cannot be blank - please provide a non-blank value or remove the annotation completely to use the default suite name (" + testClass.getSimpleName() + ")");
+        }
+
+        return suiteAnnotation.value() + (suiteAnnotation.appendClassName() ? "/" + testClass.getSimpleName() : "");
+    }
 
     private void setSuiteForNonSpringUsage(ExtensionContext context) throws IllegalAccessException {
         Object testInstance = context.getTestInstance().orElse(null);

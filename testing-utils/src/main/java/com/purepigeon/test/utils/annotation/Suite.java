@@ -87,9 +87,9 @@ public @interface Suite {
      *     If {@link Suite#appendClassName()} is set to {@code false}, the value provided here is no longer just a
      *     prefix, but rather the entire suite value.
      * </p>
-     * @return The given prefix / suite value. Defaults to an empty string.
+     * @return The given prefix / suite value.
      */
-    String value() default "";
+    String value();
 
     /**
      * Whether to append a forward slash and the simple classname of the test class to the suite value.
