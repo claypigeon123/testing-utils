@@ -22,7 +22,10 @@ package com.purepigeon.test.utils;
 
 import com.purepigeon.test.utils.annotation.FixedClock;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.Clock;
 import java.time.OffsetDateTime;
@@ -33,6 +36,7 @@ import static org.mockito.Mockito.mock;
 
 @FixedClock
 @WithTestingUtils
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlainFixedClockTest {
 
     private static final String CUSTOM_INSTANT = "1990-01-01T12:00:00.234Z";
@@ -40,21 +44,31 @@ class PlainFixedClockTest {
     private final Clock clock = mock();
 
     @Test
+    @Order(1)
     void testFixedClock() {
-        // when
-        var result = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock));
-
-        // then
-        assertEquals(FixedClock.DEFAULT_INSTANT, result);
+        testClockValue(FixedClock.DEFAULT_INSTANT);
     }
 
     @Test
+    @Order(2)
     @FixedClock(CUSTOM_INSTANT)
     void testFixedClockModified() {
+        testClockValue(CUSTOM_INSTANT);
+    }
+
+    @Test
+    @Order(3)
+    void testFixedClockReset() {
+        testClockValue(FixedClock.DEFAULT_INSTANT);
+    }
+
+    // --
+
+    private void testClockValue(String expected) {
         // when
         var result = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now(clock));
 
         // then
-        assertEquals(CUSTOM_INSTANT, result);
+        assertEquals(expected, result);
     }
 }
