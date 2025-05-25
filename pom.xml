@@ -10,7 +10,7 @@
 
     <name>Testing Utils Parent</name>
     <description>Various testing utilities for java</description>
-    <url>https://github.com/claypigeon123/testing-utils</url>
+    <url>https://purepigeon.com/projects/testing-utils</url>
 
     <licenses>
         <license>
@@ -28,8 +28,14 @@
         <developer>
             <id>claypigeon123</id>
             <name>Zoltán Nagy</name>
-            <email>n.zoltan18@gmail.com</email>
+            <email>contact@purepigeon.com</email>
             <url>https://github.com/claypigeon123</url>
+        </developer>
+        <developer>
+            <id>maros-hanzel</id>
+            <name>Maroš Hanzel</name>
+            <email>contact@purepigeon.com</email>
+            <url>https://github.com/maros-hanzel</url>
         </developer>
     </developers>
 
