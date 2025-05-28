@@ -54,8 +54,8 @@ import org.springframework.context.annotation.Primary;
 @AutoConfiguration
 public class TestingUtilsAutoConfiguration {
 
-    private static final String JSONB_BIND_SPI = "classpath:META-INF/services/jakarta.json.bind.spi.JsonbProvider";
-    private static final String JSONB_SPI = "classpath:META-INF/services/jakarta.json.spi.JsonProvider";
+    private static final String JSONB_SPI = "classpath:META-INF/services/jakarta.json.bind.spi.JsonbProvider";
+    private static final String JSON_SPI = "classpath:META-INF/services/jakarta.json.spi.JsonProvider";
 
     @Configuration
     @ConditionalOnClass(ObjectMapper.class)
@@ -81,8 +81,9 @@ public class TestingUtilsAutoConfiguration {
     @Configuration
     @Import(JsonbAutoConfiguration.class)
     @ConditionalOnClass(Jsonb.class)
-    @ConditionalOnResource(resources = { JSONB_BIND_SPI, JSONB_SPI })
+    @ConditionalOnResource(resources = { JSONB_SPI, JSON_SPI })
     public static class JsonbConfiguration {
+
         @Bean
         public TestingUtils jsonbTestingUtils(Jsonb jsonb) {
             return new JsonbTestingUtils(jsonb);
