@@ -87,8 +87,15 @@ public abstract class AbstractTestingUtilsTest {
 
     @Test
     void jsonToObject() {
-        performReadTest(() -> testingUtils.jsonToObject("{ \"id\": \"" + TestData.ID + "\", \"content\": \"" + TestData.CONTENT + "\" }", TestData.class));
-        performReadTest(() -> testingUtils.jsonToObject("{ \"id\": \"" + TestData.ID + "\", \"content\": \"" + TestData.CONTENT + "\" }", new TypeRef<>() {}));
+        String json = """
+        {
+            "id": "%s",
+            "content": "%s"
+        }
+        """.formatted(TestData.ID, TestData.CONTENT);
+
+        performReadTest(() -> testingUtils.jsonToObject(json, TestData.class));
+        performReadTest(() -> testingUtils.jsonToObject(json, new TypeRef<>() {}));
     }
 
     @Test
