@@ -7,12 +7,12 @@ building / loading and assertions; focus on the core logic of the tests and keep
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
     <scope>test</scope>
 </dependency>
 ```
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils:1.3.0'
+testImplementation 'com.purepigeon.test:testing-utils:1.3.1'
 ```
 
 # Documentation
