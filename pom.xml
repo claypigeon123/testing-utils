@@ -52,7 +52,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>1.3.2-SNAPSHOT</revision>
+        <revision>1.3.2</revision>
         <testing-utils.version>${revision}</testing-utils.version>
         <sourceDirectory.original>${project.basedir}/src/main/java</sourceDirectory.original>
         <sourceDirectory.delomboked>${project.build.directory}/generated-sources/delombok</sourceDirectory.delomboked>
