@@ -32,10 +32,13 @@ import com.purepigeon.test.utils.TestingUtils;
  */
 public abstract class AbstractTestingUtils implements TestingUtils {
 
+    /**
+     * <p>The current suite value.</p>
+     */
     protected String suite;
 
     @Override
-    public String getSuite() {
+    public String getSuite() throws IllegalStateException {
         if (suite == null || suite.isBlank()) {
             throw new IllegalStateException("Suite property is not set");
         }

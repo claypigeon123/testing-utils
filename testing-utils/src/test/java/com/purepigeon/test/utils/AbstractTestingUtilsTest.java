@@ -30,7 +30,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,10 +79,10 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "INPUT", "EXPECTED" })
-    void readObject(String artifactType, String testCase) {
-        performReadTest(() -> testingUtils.readObject(testingUtils.getSuite(), testCase, ArtifactType.valueOf(artifactType), TEST_DATA, TestData.class));
-        performReadTest(() -> testingUtils.readObject(testingUtils.getSuite(), testCase, ArtifactType.valueOf(artifactType), TEST_DATA, new TypeRef<>() {}));
+    @EnumSource(ArtifactType.class)
+    void readObject(ArtifactType artifactType, String testCase) {
+        performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, TestData.class));
+        performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, new TypeRef<>() {}));
     }
 
     @Test
@@ -124,9 +124,9 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "INPUT", "EXPECTED" })
-    void readString(String artifactType, String testCase) {
-        performRawReadTest(() -> testingUtils.readString(testingUtils.getSuite(), testCase, ArtifactType.valueOf(artifactType), TEST_DATA));
+    @EnumSource(ArtifactType.class)
+    void readString(ArtifactType artifactType, String testCase) {
+        performRawReadTest(() -> testingUtils.readString(testCase, artifactType, TEST_DATA));
     }
 
     @Test
@@ -145,7 +145,7 @@ public abstract class AbstractTestingUtilsTest {
         "STRICT"
     })
     void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
-        testingUtils.assertObject(testingUtils.getSuite(), testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
+        testingUtils.assertObject(testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
     }
 
     @Test
