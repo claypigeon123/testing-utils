@@ -100,42 +100,6 @@ public interface TestingUtils {
 
     /**
      * <p>
-     *     Reads an expected JSON test resource as the specified type.
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     */
-    default <T> T readExpectedObject(String testCase, Class<T> returnObjectType) {
-        return readExpectedObject(testCase, artifactFileName(returnObjectType), returnObjectType);
-    }
-
-    /**
-     * <p>
-     *     Reads an expected JSON test resource as the specified type.
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code new TypeRef<TestRequest>() {}} as the type would read the resource from
-     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     */
-    default <T> T readExpectedObject(String testCase, TypeRef<T> returnObjectType) {
-        return readExpectedObject(testCase, artifactFileName(returnObjectType), returnObjectType);
-    }
-
-    /**
-     * <p>
      *     Reads an input test resource as the specified type, with the specified filename.
      * </p>
      * <p>
@@ -178,6 +142,42 @@ public interface TestingUtils {
      */
     default <T> T readInputObject(String testCase, String artifactName, TypeRef<T> returnObjectType) {
         return readObject(testCase, DefaultArtifactType.INPUT, artifactName, returnObjectType);
+    }
+
+    /**
+     * <p>
+     *     Reads an expected JSON test resource as the specified type.
+     * </p>
+     * <p>
+     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
+     *     {@code TestRequest.class} as the type would read the resource from
+     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
+     * </p>
+     * @param testCase the test case, used in the path
+     * @param returnObjectType the desired type
+     * @return Object, mapped from the read resource
+     * @param <T> The desired type
+     */
+    default <T> T readExpectedObject(String testCase, Class<T> returnObjectType) {
+        return readExpectedObject(testCase, artifactFileName(returnObjectType), returnObjectType);
+    }
+
+    /**
+     * <p>
+     *     Reads an expected JSON test resource as the specified type.
+     * </p>
+     * <p>
+     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
+     *     {@code new TypeRef<TestRequest>() {}} as the type would read the resource from
+     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
+     * </p>
+     * @param testCase the test case, used in the path
+     * @param returnObjectType the desired type
+     * @return Object, mapped from the read resource
+     * @param <T> The desired type
+     */
+    default <T> T readExpectedObject(String testCase, TypeRef<T> returnObjectType) {
+        return readExpectedObject(testCase, artifactFileName(returnObjectType), returnObjectType);
     }
 
     /**
@@ -374,23 +374,6 @@ public interface TestingUtils {
 
     /**
      * <p>
-     *     Reads an expected JSON test resource as a string.
-     * </p>
-     * <p>
-     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
-     *     {@code TestRequest.class} as the type would read the resource from
-     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
-     * </p>
-     * @param testCase the test case, used in the path
-     * @param returnObjectType the desired type
-     * @return String representation of the read resource
-     */
-    default String readExpectedString(String testCase, Class<?> returnObjectType) {
-        return readExpectedString(testCase, artifactFileName(returnObjectType));
-    }
-
-    /**
-     * <p>
      *     Reads an input test resource as a string.
      * </p>
      * <p>
@@ -408,6 +391,23 @@ public interface TestingUtils {
      */
     default String readInputString(String testCase, String artifactName) {
         return readString(testCase, DefaultArtifactType.INPUT, artifactName);
+    }
+
+    /**
+     * <p>
+     *     Reads an expected JSON test resource as a string.
+     * </p>
+     * <p>
+     *     Expects the resource to have the same name as the given type's simple name. For example, specifying
+     *     {@code TestRequest.class} as the type would read the resource from
+     *     {@code {suite}/{testCase}/expected/TestRequest.json}.
+     * </p>
+     * @param testCase the test case, used in the path
+     * @param returnObjectType the desired type
+     * @return String representation of the read resource
+     */
+    default String readExpectedString(String testCase, Class<?> returnObjectType) {
+        return readExpectedString(testCase, artifactFileName(returnObjectType));
     }
 
     /**
