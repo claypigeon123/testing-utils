@@ -267,7 +267,7 @@ public interface TestingUtils {
      *     <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
      * </ul>
      * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
+     * @param artifactType the artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName the filename of the artifact to read
      * @param returnObjectType the desired type
      * @return Object, mapped from the read resource
@@ -316,7 +316,7 @@ public interface TestingUtils {
      *     <li>{@link TestingUtils#readExpectedObject(String, String, TypeRef)}</li>
      * </ul>
      * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
+     * @param artifactType the artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName the filename of the artifact to read
      * @param returnObjectType the desired type
      * @return Object, mapped from the read resource
@@ -472,7 +472,7 @@ public interface TestingUtils {
      *     <li>{@link TestingUtils#readExpectedString(String, String)}</li>
      * </ul>
      * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
+     * @param artifactType the artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName the filename of the artifact to read
      * @return String representation of the read resource
      */
@@ -617,7 +617,7 @@ public interface TestingUtils {
      * </p>
      * @param suite The test suite
      * @param testCase The test case
-     * @param artifactType The artifact type
+     * @param artifactType The artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName The artifact name
      * @return A {@link Path} pointing to the artifact resolved from the input parameters
      */
