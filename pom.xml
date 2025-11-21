@@ -239,6 +239,7 @@
                 <version>${central-publishing-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <skipPublishing>true</skipPublishing>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
                     <excludeArtifacts>
