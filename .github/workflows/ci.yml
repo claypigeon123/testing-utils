@@ -5,6 +5,9 @@ on:
     branches:
       - '**'
 
+env:
+  JACOCO_AGGREGATE_PATH: tests-parent/coverage-report/target/site/jacoco-aggregate
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,10 +34,16 @@ jobs:
       - name: build
         run: mvn -B clean verify
 
+      - name: upload coverage report
+        uses: actions/upload-artifact@v5
+        with:
+          name: jacoco-report
+          path: ${{env.JACOCO_AGGREGATE_PATH}}/
+
       - name: generate badge
         uses: cicirello/jacoco-badge-generator@v2
         with:
-          jacoco-csv-file: 'tests-parent/coverage-report/target/site/jacoco-aggregate/jacoco.csv'
+          jacoco-csv-file: '${{env.JACOCO_AGGREGATE_PATH}}/jacoco.csv'
 
       - name: commit badge
         uses: EndBug/add-and-commit@v9

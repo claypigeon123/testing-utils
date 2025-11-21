@@ -1,4 +1,4 @@
-![Coverage](.github/badges/jacoco.svg)
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/claypigeon123/testing-utils/actions/workflows/ci.yml)
 
 # Testing Utils
 Streamline Java / Spring Boot unit and integration tests by eliminating boilerplate code related to test resource
