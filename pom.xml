@@ -60,6 +60,7 @@
 
         <!-- dependencies -->
         <spring-boot.version>3.5.7</spring-boot.version>
+        <okhttp3.version>5.3.1</okhttp3.version>
         <lombok.version>1.18.42</lombok.version>
 
         <!-- plugins -->
@@ -79,6 +80,7 @@
     <modules>
         <module>testing-utils</module>
         <module>tests-parent</module>
+        <module>testing-utils-mockwebserver</module>
     </modules>
 
     <profiles>
@@ -242,6 +244,7 @@
                     <excludeArtifacts>
                         <excludeArtifact>tests-parent</excludeArtifact>
                         <excludeArtifact>plain-integration</excludeArtifact>
+                        <excludeArtifact>mockwebserver-plain-integration</excludeArtifact>
                         <excludeArtifact>coverage-report</excludeArtifact>
                     </excludeArtifacts>
                 </configuration>
