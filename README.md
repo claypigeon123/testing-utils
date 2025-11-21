@@ -1,3 +1,5 @@
+![Coverage](.github/badges/jacoco.svg)
+
 # Testing Utils
 Streamline Java / Spring Boot unit and integration tests by eliminating boilerplate code related to test resource
 building / loading and assertions; focus on the core logic of the tests and keep them free from clutter.

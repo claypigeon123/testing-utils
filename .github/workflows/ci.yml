@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - name: setup
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: configure gpg key
+        run: |
+          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
+
+      - name: build
+        run: mvn -B clean verify
+
+      - name: generate badge
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: 'tests-parent/coverage-report/target/site/jacoco-aggregate/jacoco.csv'
+
+      - name: commit badge
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: 'github_actions'
+          message: 'update coverage badge'
+          add: '*.svg'
