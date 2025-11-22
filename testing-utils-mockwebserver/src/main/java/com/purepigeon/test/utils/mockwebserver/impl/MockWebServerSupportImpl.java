@@ -37,6 +37,10 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * <p> Default implementation of {@link MockWebServerSupport} that integrates with {@link TestingUtils}. </p>
+ * @see MockWebServerSupport#createDefault(TestingUtils)
+ */
 @RequiredArgsConstructor
 public class MockWebServerSupportImpl implements MockWebServerSupport {
 
@@ -91,16 +95,6 @@ public class MockWebServerSupportImpl implements MockWebServerSupport {
     }
 
     @Override
-    public <T> String artifactFileName(Class<T> clazz) {
-        return testingUtils.artifactFileName(clazz);
-    }
-
-    @Override
-    public <T> String artifactFileName(TypeRef<T> typeRef) {
-        return testingUtils.artifactFileName(typeRef);
-    }
-
-    @Override
     public <T> RecordedRequest assertRequest(String testCase, Class<T> clazz) {
         RecordedRequest recordedRequest = this.takeRequest();
 
@@ -118,6 +112,16 @@ public class MockWebServerSupportImpl implements MockWebServerSupport {
         testingUtils.assertObject(testCase, actual);
 
         return recordedRequest;
+    }
+
+    @Override
+    public <T> String artifactFileName(Class<T> clazz) {
+        return testingUtils.artifactFileName(clazz);
+    }
+
+    @Override
+    public <T> String artifactFileName(TypeRef<T> typeRef) {
+        return testingUtils.artifactFileName(typeRef);
     }
 
     // --

@@ -22,12 +22,19 @@ package com.purepigeon.test.utils.mockwebserver.config;
 
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.mockwebserver.MockWebServerSupport;
+import com.purepigeon.test.utils.mockwebserver.annotation.WithMockWebServer;
 import com.purepigeon.test.utils.mockwebserver.impl.MockWebServerSupportImpl;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * <p>
+ *     Autoconfiguration that adds a {@link MockWebServerSupport} bean to the application context.
+ * </p>
+ * @see WithMockWebServer
+ */
 @AutoConfiguration
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class TestingUtilsMockWebServerAutoConfiguration {

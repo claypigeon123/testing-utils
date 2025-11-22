@@ -20,6 +20,7 @@ package com.purepigeon.test.utils.mockwebserver.extension;
  * #L%
  */
 
+import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.extension.TestingUtilsExtension;
 import com.purepigeon.test.utils.mockwebserver.MockWebServerSupport;
 import com.purepigeon.test.utils.mockwebserver.annotation.EnqueueResponse;
@@ -27,10 +28,7 @@ import com.purepigeon.test.utils.mockwebserver.annotation.MockWebServerlessTest;
 import com.purepigeon.test.utils.mockwebserver.annotation.WithMockWebServer;
 import lombok.SneakyThrows;
 import okhttp3.Headers;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -40,6 +38,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * <p>
+ *     Junit 5 extension that:
+ *     <ul>
+ *         <li> Starts a mock web server before each test method </li>
+ *         <li> Stops the mock web server after each test method </li>
+ *         <li> Handles the {@link EnqueueResponse} and {@link MockWebServerlessTest} annotations </li>
+ *     </ul>
+ * </p>
+ * <p>
+ *     The extension works with or without Spring.
+ * </p>
+ * <p>
+ *     While this extension can be used directly with Junit's {@link ExtendWith} annotation, the simpler way is to just
+ *     apply both {@link WithTestingUtils} and {@link WithMockWebServer} to a given test class.
+ * </p>
+ * @see WithMockWebServer
+ * @see EnqueueResponse
+ * @see MockWebServerlessTest
+ */
 public class TestingUtilsMockWebServerExtension implements TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback {
 
     private int port = 0;
