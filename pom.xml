@@ -60,8 +60,8 @@
         <sourceDirectory>${sourceDirectory.original}</sourceDirectory>
 
         <!-- dependencies -->
-        <spring-boot.version>3.5.7</spring-boot.version>
-        <okhttp3.version>5.3.1</okhttp3.version>
+        <spring-boot.version>3.5.8</spring-boot.version>
+        <okhttp3.version>5.3.2</okhttp3.version>
         <lombok.version>1.18.42</lombok.version>
 
         <!-- plugins -->
