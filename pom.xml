@@ -79,8 +79,8 @@
 
     <modules>
         <module>testing-utils</module>
-        <module>tests-parent</module>
         <module>testing-utils-mockwebserver</module>
+        <module>tests-parent</module>
     </modules>
 
     <profiles>
