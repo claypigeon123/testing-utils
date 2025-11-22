@@ -11,6 +11,8 @@ on:
         required: true
       TU_PAT:
         required: true
+      GPG_SIGNING_KEY:
+        required: true
     inputs:
       do_deploy:
         description: Whether to execute the deployment step

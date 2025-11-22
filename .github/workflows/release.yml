@@ -12,5 +12,6 @@ jobs:
     secrets:
       GITGUARDIAN_API_KEY: ${{secrets.GITGUARDIAN_API_KEY}}
       TU_PAT: ${{secrets.TU_PAT}}
+      GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
     with:
       do_deploy: true
