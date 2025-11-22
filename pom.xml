@@ -52,7 +52,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>1.4.0</revision>
+        <revision>1.4.1-SNAPSHOT</revision>
         <testing-utils.version>${revision}</testing-utils.version>
         <skipGpg>true</skipGpg>
         <sourceDirectory.original>${project.basedir}/src/main/java</sourceDirectory.original>
@@ -241,7 +241,7 @@
                 <version>${central-publishing-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <skipPublishing>false</skipPublishing>
+                    <skipPublishing>true</skipPublishing>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
                     <excludeArtifacts>
