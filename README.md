@@ -5,16 +5,30 @@ Streamline Java / Spring Boot unit and integration tests by eliminating boilerpl
 building / loading and assertions; focus on the core logic of the tests and keep them free from clutter.
 
 # Coordinates & Version
+## Testing Utils Core
 ```xml
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils</artifactId>
-    <version>1.3.2</version>
+    <version>1.4.0</version>
     <scope>test</scope>
 </dependency>
 ```
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils:1.3.2'
+testImplementation 'com.purepigeon.test:testing-utils:1.4.0'
+```
+
+## Mock Web Server Integration
+```xml
+<dependency>
+    <groupId>com.purepigeon.test</groupId>
+    <artifactId>testing-utils-mockwebserver</artifactId>
+    <version>1.4.0</version>
+    <scope>test</scope>
+</dependency>
+```
+```groovy
+testImplementation 'com.purepigeon.test:testing-utils-mockwebserver:1.4.0'
 ```
 
 # Documentation
