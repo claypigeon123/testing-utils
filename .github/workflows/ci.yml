@@ -6,6 +6,11 @@ on:
       - '**'
   pull_request:
   workflow_call:
+    secrets:
+      GITGUARDIAN_API_KEY:
+        required: true
+      TU_PAT:
+        required: true
     inputs:
       do_deploy:
         description: Whether to execute the deployment step
