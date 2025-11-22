@@ -9,5 +9,8 @@ jobs:
     uses: ./.github/workflows/ci.yml
     permissions:
       contents: write
+    secrets:
+      GITGUARDIAN_API_KEY: ${{secrets.GITGUARDIAN_API_KEY}}
+      TU_PAT: ${{secrets.TU_PAT}}
     with:
       do_deploy: true
