@@ -20,10 +20,13 @@ package com.purepigeon.test.utils.mockwebserver.extension;
  * #L%
  */
 
+import com.purepigeon.test.utils.extension.TestingUtilsExtension;
 import com.purepigeon.test.utils.mockwebserver.MockWebServerSupport;
+import com.purepigeon.test.utils.mockwebserver.annotation.EnqueueResponse;
 import com.purepigeon.test.utils.mockwebserver.annotation.MockWebServerlessTest;
 import com.purepigeon.test.utils.mockwebserver.annotation.WithMockWebServer;
 import lombok.SneakyThrows;
+import okhttp3.Headers;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -45,7 +48,7 @@ public class TestingUtilsMockWebServerExtension implements TestInstancePostProce
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
-        this.port = resolvePort(testClass);
+        port = resolvePort(testClass);
 
         try {
             SpringExtension.getApplicationContext(context);
@@ -58,16 +61,21 @@ public class TestingUtilsMockWebServerExtension implements TestInstancePostProce
     public void beforeEach(ExtensionContext context) {
         if (isOptedOutTestMethod(context.getRequiredTestMethod())) return;
 
-        getMockWebServerSupportInstance(context)
-            .ifPresent(mockWebServerSupport -> mockWebServerSupport.start(this.port));
+        var mockWebServer = getMockWebServerSupportInstance(context).orElse(null);
+        if (mockWebServer == null) return;
+
+        mockWebServer.start(port);
+        enqueueViaAnnotations(mockWebServer, context);
     }
 
     @Override
     public void afterEach(ExtensionContext context) {
         if (isOptedOutTestMethod(context.getRequiredTestMethod())) return;
 
-        getMockWebServerSupportInstance(context)
-            .ifPresent(MockWebServerSupport::close);
+        var mockWebServer = getMockWebServerSupportInstance(context).orElse(null);
+        if (mockWebServer == null) return;
+
+        mockWebServer.stop();
     }
 
     // --
@@ -119,6 +127,31 @@ public class TestingUtilsMockWebServerExtension implements TestInstancePostProce
         if (fields.size() != 1) throw new IllegalStateException("Expected a single MockWebServerSupport field");
 
         return fields.getFirst();
+    }
+
+    private void enqueueViaAnnotations(MockWebServerSupport mockWebServer, ExtensionContext context) {
+        String testCase = TestingUtilsExtension.resolveTestCase(context);
+        EnqueueResponse[] annotations = context.getRequiredTestMethod().getAnnotationsByType(EnqueueResponse.class);
+
+        if (annotations.length == 0) return;
+
+        Arrays.stream(annotations).forEach(annotation -> {
+            if (annotation.value().equals(Void.class) && annotation.artifactName().isBlank()) {
+                throw new IllegalStateException("@EnqueueResponse annotation must specify either the 'value' or the 'artifactName' parameter (when both are defined, 'artifactName' is ignored)");
+            }
+
+            String artifactName = !annotation.value().equals(Void.class)
+                ? mockWebServer.artifactFileName(annotation.value())
+                : annotation.artifactName();
+
+            mockWebServer.enqueueResource(
+                testCase,
+                annotation.artifactType(),
+                artifactName,
+                annotation.status(),
+                Headers.of("Content-Type", "application/json")
+            );
+        });
     }
 
     private boolean isOptedOutTestMethod(Method testMethod) {

@@ -68,6 +68,17 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     private boolean usesSpring = true;
     private boolean usesFixedClock = false;
 
+    public static String resolveTestCase(ExtensionContext extensionContext) {
+        Optional<Method> testMethodOpt = extensionContext.getTestMethod();
+        if (testMethodOpt.isEmpty()) return null;
+
+        Method method = testMethodOpt.get();
+
+        return Optional.ofNullable(method.getAnnotation(TestCase.class))
+            .map(TestCase::value)
+            .orElse(method.getName());
+    }
+
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
@@ -105,14 +116,7 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        Optional<Method> testMethodOpt = extensionContext.getTestMethod();
-        if (testMethodOpt.isEmpty()) return null;
-
-        Method method = testMethodOpt.get();
-
-        return Optional.ofNullable(method.getAnnotation(TestCase.class))
-            .map(TestCase::value)
-            .orElse(method.getName());
+        return resolveTestCase(extensionContext);
     }
 
     // --

@@ -20,10 +20,12 @@ package com.purepigeon.test.utils.mockwebserver;
  * #L%
  */
 
+import com.purepigeon.test.utils.DefaultArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
+import com.purepigeon.test.utils.mockwebserver.annotation.EnqueueResponse;
 import com.purepigeon.test.utils.mockwebserver.annotation.MockWebServerlessTest;
 import com.purepigeon.test.utils.mockwebserver.annotation.WithMockWebServer;
 import com.purepigeon.test.utils.mockwebserver.test.*;
@@ -77,12 +79,43 @@ class MockWebServerSupportTest {
     }
 
     @Test
+    @MockWebServerlessTest
+    void testManualUse() {
+        // when
+        mockWebServerSupport.start();
+
+        // then
+        assertTrue(mockWebServerSupport.unwrap().getStarted());
+
+        // cleanup
+        mockWebServerSupport.stop();
+    }
+
+    @Test
     @TestCase("plain")
     void enqueueInputResource_class(String testCase) {
         // when
         mockWebServerSupport.enqueueInputResource(testCase, TestResponse.class);
 
         // then
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(TestResponse.class)
+    void enqueueInputResource_viaAnnotation_class(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(TestResponse.class)
+    @EnqueueResponse(TestResponse.class)
+    void enqueueInputResource_multipleViaAnnotation_class(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
         performGet(testCase, TestResponse.class);
     }
 
@@ -108,11 +141,47 @@ class MockWebServerSupportTest {
 
     @Test
     @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON)
+    void enqueueInputResource_viaAnnotation_named(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON)
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON)
+    void enqueueInputResource_multipleViaAnnotation_named(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
     void enqueueExpectedResource_class(String testCase) {
         // when
         mockWebServerSupport.enqueueExpectedResource(testCase, TestResponse.class);
 
         // then
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(value = TestResponse.class, artifactType = DefaultArtifactType.EXPECTED)
+    void enqueueExpectedResource_viaAnnotation_class(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(value = TestResponse.class, artifactType = DefaultArtifactType.EXPECTED)
+    @EnqueueResponse(value = TestResponse.class, artifactType = DefaultArtifactType.EXPECTED)
+    void enqueueExpectedResource_multipleViaAnnotation_class(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
         performGet(testCase, TestResponse.class);
     }
 
@@ -133,6 +202,24 @@ class MockWebServerSupportTest {
         mockWebServerSupport.enqueueExpectedResource(testCase, TEST_RESPONSE_JSON);
 
         // then
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON, artifactType = DefaultArtifactType.EXPECTED)
+    void enqueueExpectedResource_viaAnnotation_named(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON, artifactType = DefaultArtifactType.EXPECTED)
+    @EnqueueResponse(artifactName = TEST_RESPONSE_JSON, artifactType = DefaultArtifactType.EXPECTED)
+    void enqueueExpectedResource_multipleViaAnnotation_named(String testCase) {
+        // expect
+        performGet(testCase, TestResponse.class);
         performGet(testCase, TestResponse.class);
     }
 

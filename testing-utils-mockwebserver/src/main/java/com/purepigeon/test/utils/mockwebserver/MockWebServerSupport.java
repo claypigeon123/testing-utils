@@ -28,7 +28,7 @@ import mockwebserver3.MockWebServer;
 import mockwebserver3.RecordedRequest;
 import okhttp3.Headers;
 
-public interface MockWebServerSupport extends AutoCloseable {
+public interface MockWebServerSupport {
 
     static MockWebServerSupport createDefault(TestingUtils testingUtils) {
         return new MockWebServerSupportImpl(testingUtils);
@@ -38,7 +38,7 @@ public interface MockWebServerSupport extends AutoCloseable {
 
     void start(int port);
 
-    void close();
+    void stop();
 
     int port();
 

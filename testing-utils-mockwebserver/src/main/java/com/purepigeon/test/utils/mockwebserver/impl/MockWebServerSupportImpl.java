@@ -58,9 +58,9 @@ public class MockWebServerSupportImpl implements MockWebServerSupport {
     }
 
     @Override
-    public void close() {
+    public void stop() {
         mockWebServer.close();
-        reset();
+        mockWebServer = new MockWebServer();
     }
 
     @Override
@@ -125,10 +125,5 @@ public class MockWebServerSupportImpl implements MockWebServerSupport {
     private String getRequestBody(RecordedRequest recordedRequest) {
         assertNotNull(recordedRequest.getBody());
         return recordedRequest.getBody().string(Charset.defaultCharset());
-    }
-
-    private void reset() {
-        mockWebServer.close();
-        mockWebServer = new MockWebServer();
     }
 }
