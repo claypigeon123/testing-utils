@@ -44,8 +44,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
           server-id: 'central'
-          server-username: ${{secrets.CENTRAL_USERNAME}}
-          server-password: ${{secrets.CENTRAL_PASSWORD}}
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_PASSWORD
 
       - name: configure gpg key
         run: |
@@ -55,6 +55,9 @@ jobs:
 
       - name: build & deploy
         run: mvn -B clean deploy -DskipTests=true -DskipGpg=false -Pdelombok-build
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{secrets.CENTRAL_USERNAME}}
+          MAVEN_CENTRAL_PASSWORD: ${{secrets.CENTRAL_PASSWORD}}
 
       - name: upload coverage report
         uses: actions/upload-artifact@v5
