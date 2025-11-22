@@ -69,12 +69,12 @@ jobs:
         with:
           jacoco-csv-file: '${{env.JACOCO_AGGREGATE_PATH}}/jacoco.csv'
 
-      - name: commit badge
+      - name: commit badge / license headers
         uses: EndBug/add-and-commit@v9
         if: github.ref == 'refs/heads/main'
         with:
           default_author: 'github_actions'
-          message: 'update coverage badge'
+          message: 'update coverage badge / license headers'
           add: '*.svg'
 
       - name: deploy
