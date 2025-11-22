@@ -22,6 +22,13 @@ package com.purepigeon.test.utils.mockwebserver.annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * <p>
+ *     By default, a mock web server is automatically started and stopped for each test method in a test class
+ *     annotated by {@link WithMockWebServer}. If a test method is annotated with {@link MockWebServerlessTest},
+ *     a mock web server will not be started for it.
+ * </p>
+ */
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
