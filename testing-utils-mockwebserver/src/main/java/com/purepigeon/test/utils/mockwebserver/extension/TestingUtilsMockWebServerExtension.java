@@ -39,14 +39,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <p>
- *     Junit 5 extension that:
- *     <ul>
- *         <li> Starts a mock web server before each test method </li>
- *         <li> Stops the mock web server after each test method </li>
- *         <li> Handles the {@link EnqueueResponse} and {@link MockWebServerlessTest} annotations </li>
- *     </ul>
- * </p>
+ * <p> Junit 5 extension that: </p>
+ * <ul>
+ *     <li> Starts a mock web server before each test method </li>
+ *     <li> Stops the mock web server after each test method </li>
+ *     <li> Handles the {@link EnqueueResponse} and {@link MockWebServerlessTest} annotations </li>
+ * </ul>
  * <p>
  *     The extension works with or without Spring.
  * </p>
