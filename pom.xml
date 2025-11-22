@@ -54,6 +54,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <revision>1.4.0-SNAPSHOT</revision>
         <testing-utils.version>${revision}</testing-utils.version>
+        <skipGpg>true</skipGpg>
         <sourceDirectory.original>${project.basedir}/src/main/java</sourceDirectory.original>
         <sourceDirectory.delomboked>${project.build.directory}/generated-sources/delombok</sourceDirectory.delomboked>
         <sourceDirectory>${sourceDirectory.original}</sourceDirectory>
@@ -224,6 +225,7 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipGpg}</skip>
                             <executable>gpg</executable>
                             <gpgArguments>
                                 <arg>--pinentry-mode</arg>
