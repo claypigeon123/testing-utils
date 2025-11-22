@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>testing-utils</artifactId>
-    <name>Testing Utils</name>
+    <name>Testing Utils - Core</name>
     <description>Testing utilities for java</description>
 
     <dependencies>

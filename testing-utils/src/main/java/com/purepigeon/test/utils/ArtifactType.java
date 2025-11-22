@@ -24,7 +24,12 @@ package com.purepigeon.test.utils;
  * <p>
  *     Artifact type, used to build a path to a given test resource.
  * </p>
+ * @deprecated This enum is being replaced in favor of strings, supported by default static constants
+ *             in {@link DefaultArtifactType} for extensibility.
+ *             Subject to removal in the next major version 2.0.0.
+ * @see DefaultArtifactType
  */
+@Deprecated(since = "1.4.0", forRemoval = true)
 public enum ArtifactType {
     /**
      * <p>

@@ -35,10 +35,18 @@ public class JacksonTypeRefConnector<T> extends TypeReference<T> {
 
     private final Type type;
 
+    /**
+     * <p>Construct a new instance using Testing Utils' own {@link TypeRef} class.</p>
+     * @param ref The Testing Utils-provided type reference to use
+     */
     public JacksonTypeRefConnector(TypeRef<T> ref) {
         this.type = ref.getType();
     }
 
+    /**
+     * <p>Getter for the underlying {@link Type}</p>
+     * @return The underlying type this type reference connector refers to
+     */
     @Override
     public Type getType() {
         return type;

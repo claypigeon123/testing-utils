@@ -19,11 +19,22 @@
             <artifactId>testing-utils</artifactId>
             <version>${testing-utils.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>testing-utils-mockwebserver</artifactId>
+            <version>${testing-utils.version}</version>
+        </dependency>
 
         <!-- test modules -->
         <dependency>
             <groupId>com.purepigeon.test</groupId>
             <artifactId>plain-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>mockwebserver-plain-integration</artifactId>
             <version>${testing-utils.version}</version>
             <scope>test</scope>
         </dependency>

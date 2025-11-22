@@ -68,11 +68,22 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     private boolean usesSpring = true;
     private boolean usesFixedClock = false;
 
+    public static String resolveTestCase(ExtensionContext extensionContext) {
+        Optional<Method> testMethodOpt = extensionContext.getTestMethod();
+        if (testMethodOpt.isEmpty()) return null;
+
+        Method method = testMethodOpt.get();
+
+        return Optional.ofNullable(method.getAnnotation(TestCase.class))
+            .map(TestCase::value)
+            .orElse(method.getName());
+    }
+
     @Override
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         Class<?> testClass = testInstance.getClass();
 
-        String suite = resolveSuite(testClass);
+        String resolvedSuite = resolveSuite(testClass);
 
         this.usesFixedClock = testClass.isAnnotationPresent(FixedClock.class) || Arrays.stream(testClass.getDeclaredMethods())
             .filter(method -> method.isAnnotationPresent(Test.class))
@@ -81,11 +92,11 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
         try {
             ApplicationContext applicationContext = SpringExtension.getApplicationContext(context);
             applicationContext.getBeansOfType(TestingUtils.class).values()
-                .forEach(instance -> instance.setSuite(suite));
+                .forEach(instance -> instance.setSuite(resolvedSuite));
         } catch (NoClassDefFoundError e) {
             this.usesSpring = false;
         } finally {
-            this.suite = suite;
+            this.suite = resolvedSuite;
         }
     }
 
@@ -105,14 +116,7 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        Optional<Method> testMethodOpt = extensionContext.getTestMethod();
-        if (testMethodOpt.isEmpty()) return null;
-
-        Method method = testMethodOpt.get();
-
-        return Optional.ofNullable(method.getAnnotation(TestCase.class))
-            .map(TestCase::value)
-            .orElse(method.getName());
+        return resolveTestCase(extensionContext);
     }
 
     // --

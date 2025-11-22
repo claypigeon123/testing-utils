@@ -58,6 +58,7 @@ public @interface FixedClock {
      * <p>
      *     Default is {@link FixedClock#DEFAULT_INSTANT}.
      * </p>
+     * @return The fixed instant in string format.
      */
     String value() default DEFAULT_INSTANT;
 }

@@ -20,7 +20,6 @@ package com.purepigeon.test.utils.impl.jsonb;
  * #L%
  */
 
-import com.purepigeon.test.utils.ArtifactType;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
@@ -46,15 +45,15 @@ public class JsonbTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
-    public <T> T readObject(String suite, String testCase, ArtifactType artifactType, String artifactName, Class<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(suite, testCase, artifactType, artifactName);
+    public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
+        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
         return jsonb.fromJson(Files.readString(jsonPath), returnObjectType);
     }
 
     @Override
     @SneakyThrows
-    public <T> T readObject(String suite, String testCase, ArtifactType artifactType, String artifactName, TypeRef<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(suite, testCase, artifactType, artifactName);
+    public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
+        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
         return jsonb.fromJson(Files.readString(jsonPath), returnObjectType.getType());
     }
 

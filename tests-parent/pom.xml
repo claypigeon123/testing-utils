@@ -19,5 +19,6 @@
 
         <!-- aggregation -->
         <module>coverage-report</module>
+        <module>mockwebserver-plain-integration</module>
     </modules>
 </project>
