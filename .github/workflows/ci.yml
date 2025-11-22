@@ -66,7 +66,6 @@ jobs:
 
       - name: generate badge
         uses: cicirello/jacoco-badge-generator@v2
-        if: github.ref == 'refs/heads/main'
         with:
           jacoco-csv-file: '${{env.JACOCO_AGGREGATE_PATH}}/jacoco.csv'
 
