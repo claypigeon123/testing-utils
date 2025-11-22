@@ -3,15 +3,61 @@ name: release
 on:
   workflow_dispatch:
 
+env:
+  JACOCO_AGGREGATE_PATH: tests-parent/coverage-report/target/site/jacoco-aggregate
+
 jobs:
-  build_and_deploy:
+  scan:
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: GitGuardian Shield Action
+        uses: GitGuardian/ggshield-action@v1
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{github.event.before}}
+          GITHUB_PUSH_BASE_SHA: ${{github.event.base}}
+          GITHUB_DEFAULT_BRANCH: ${{github.event.repository.default_branch}}
+          GITGUARDIAN_API_KEY: ${{secrets.GITGUARDIAN_API_KEY}}
+  build:
+    runs-on: ubuntu-latest
+    needs: scan
+    if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
-    secrets:
-      GITGUARDIAN_API_KEY: ${{secrets.GITGUARDIAN_API_KEY}}
-      TU_PAT: ${{secrets.TU_PAT}}
-      GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
-    with:
-      do_deploy: true
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          token: '${{ secrets.TU_PAT }}'
+
+      - name: setup
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: 'central'
+          server-username: ${{secrets.CENTRAL_USERNAME}}
+          server-password: ${{secrets.CENTRAL_PASSWORD}}
+
+      - name: configure gpg key
+        run: |
+          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
+
+      - name: build & deploy
+        run: mvn -B clean deploy -DskipTests=true -DskipGpg=false -Pdelombok-build
+
+      - name: upload coverage report
+        uses: actions/upload-artifact@v5
+        with:
+          name: jacoco-report
+          path: ${{env.JACOCO_AGGREGATE_PATH}}/

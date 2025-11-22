@@ -5,19 +5,6 @@ on:
     branches:
       - '**'
   pull_request:
-  workflow_call:
-    secrets:
-      GITGUARDIAN_API_KEY:
-        required: true
-      TU_PAT:
-        required: true
-      GPG_SIGNING_KEY:
-        required: true
-    inputs:
-      do_deploy:
-        description: Whether to execute the deployment step
-        type: boolean
-        default: false
 
 env:
   JACOCO_AGGREGATE_PATH: tests-parent/coverage-report/target/site/jacoco-aggregate
@@ -58,13 +45,6 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: configure gpg key
-        if: github.ref == 'refs/heads/main' && inputs.do_deploy == true
-        run: |
-          echo -n "$GPG_SIGNING_KEY" | base64 --decode | gpg --import
-        env:
-          GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
-
       - name: build
         run: mvn -B clean verify
 
@@ -88,7 +68,3 @@ jobs:
           add: '*.svg'
         env:
           GITHUB_TOKEN: '${{ secrets.TU_PAT }}'
-
-      - name: deploy
-        if: github.ref == 'refs/heads/main' && inputs.do_deploy == true
-        run: mvn -B clean deploy -DskipTests=true -DskipGpg=false -Pdelombok-build
