@@ -47,7 +47,7 @@ import java.lang.annotation.*;
  *     class SampleServiceImplTest {
  *
  *         @Autowired
- *         private TestingUtils testingUtils
+ *         private TestingUtils testingUtils;
  *
  *         // ...
  *     }
