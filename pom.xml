@@ -52,7 +52,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>1.4.2-SNAPSHOT</revision>
+        <revision>2.0.0-SNAPSHOT</revision>
         <testing-utils.version>${revision}</testing-utils.version>
         <skipGpg>true</skipGpg>
         <sourceDirectory.original>${project.basedir}/src/main/java</sourceDirectory.original>
@@ -60,7 +60,7 @@
         <sourceDirectory>${sourceDirectory.original}</sourceDirectory>
 
         <!-- dependencies -->
-        <spring-boot.version>3.5.8</spring-boot.version>
+        <spring-boot.version>4.0.0</spring-boot.version>
         <okhttp3.version>5.3.2</okhttp3.version>
         <lombok.version>1.18.42</lombok.version>
 
