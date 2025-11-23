@@ -20,7 +20,6 @@ package com.purepigeon.test.utils.config;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
@@ -28,16 +27,19 @@ import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
 import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
 import jakarta.json.bind.Jsonb;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
+import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jsonb.autoconfigure.JsonbAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * <p>
@@ -52,6 +54,7 @@ import org.springframework.context.annotation.Primary;
  * </p>
  */
 @AutoConfiguration
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestingUtilsAutoConfiguration {
 
     private static final String JSONB_SPI = "classpath:META-INF/services/jakarta.json.bind.spi.JsonbProvider";

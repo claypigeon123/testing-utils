@@ -20,8 +20,8 @@ package com.purepigeon.test.utils.impl.jackson;
  * #L%
  */
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.purepigeon.test.utils.TypeRef;
+import tools.jackson.core.type.TypeReference;
 
 import java.lang.reflect.Type;
 

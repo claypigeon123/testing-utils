@@ -20,13 +20,13 @@ package com.purepigeon.test.utils.impl.jackson;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
