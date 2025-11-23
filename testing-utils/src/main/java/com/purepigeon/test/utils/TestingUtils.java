@@ -240,33 +240,6 @@ public interface TestingUtils {
      *     <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
      * </ul>
      * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
-     * @param artifactName the filename of the artifact to read
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     * @deprecated Prefer {@link TestingUtils#readObject(String, String, String, Class)}.
-     *             Subject to removal in the next major version 2.0.0.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    default <T> T readObject(String testCase, ArtifactType artifactType, String artifactName, Class<T> returnObjectType) {
-        return readObject(testCase, artifactType.toString(), artifactName, returnObjectType);
-    }
-
-    /**
-     * <p>
-     *     The full method for reading input and expected test resources as objects.
-     * </p>
-     * <p>
-     *     Prefer using the more streamlined variants:
-     * </p>
-     * <ul>
-     *     <li>{@link TestingUtils#readInputObject(String, Class)}</li>
-     *     <li>{@link TestingUtils#readInputObject(String, String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedObject(String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedObject(String, String, Class)}</li>
-     * </ul>
-     * @param testCase the test case, used in the path
      * @param artifactType the artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName the filename of the artifact to read
      * @param returnObjectType the desired type
@@ -274,33 +247,6 @@ public interface TestingUtils {
      * @param <T> The desired type
      */
     <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType);
-
-    /**
-     * <p>
-     *     The full method for reading input and expected test resources as objects.
-     * </p>
-     * <p>
-     *     Prefer using the more streamlined variants:
-     * </p>
-     * <ul>
-     *     <li>{@link TestingUtils#readInputObject(String, TypeRef)}</li>
-     *     <li>{@link TestingUtils#readInputObject(String, String, TypeRef)}</li>
-     *     <li>{@link TestingUtils#readExpectedObject(String, TypeRef)}</li>
-     *     <li>{@link TestingUtils#readExpectedObject(String, String, TypeRef)}</li>
-     * </ul>
-     * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
-     * @param artifactName the filename of the artifact to read
-     * @param returnObjectType the desired type
-     * @return Object, mapped from the read resource
-     * @param <T> The desired type
-     * @deprecated Prefer {@link TestingUtils#readObject(String, String, String, TypeRef)}.
-     *             Subject to removal in the next major version 2.0.0.
-     */
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    default <T> T readObject(String testCase, ArtifactType artifactType, String artifactName, TypeRef<T> returnObjectType) {
-        return readObject(testCase, artifactType.toString(), artifactName, returnObjectType);
-    }
 
     /**
      * <p>
@@ -445,33 +391,6 @@ public interface TestingUtils {
      *     <li>{@link TestingUtils#readExpectedString(String, String)}</li>
      * </ul>
      * @param testCase the test case, used in the path
-     * @param artifactType the artifact type
-     * @param artifactName the filename of the artifact to read
-     * @return String representation of the read resource
-     * @deprecated Prefer {@link TestingUtils#readString(String, String, String)}.
-     *             Subject to removal in the next major version 2.0.0.
-     */
-    @SneakyThrows
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    default String readString(String testCase, ArtifactType artifactType, String artifactName) {
-        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType.toString(), artifactName);
-        return new String(Files.readAllBytes(jsonPath));
-    }
-
-    /**
-     * <p>
-     *     The full method for reading input and expected test resources as strings.
-     * </p>
-     * <p>
-     *     Prefer using the more streamlined variants:
-     * </p>
-     * <ul>
-     *     <li>{@link TestingUtils#readInputString(String, Class)}</li>
-     *     <li>{@link TestingUtils#readInputString(String, String)}</li>
-     *     <li>{@link TestingUtils#readExpectedString(String, Class)}</li>
-     *     <li>{@link TestingUtils#readExpectedString(String, String)}</li>
-     * </ul>
-     * @param testCase the test case, used in the path
      * @param artifactType the artifact type (defaults in {@link DefaultArtifactType})
      * @param artifactName the filename of the artifact to read
      * @return String representation of the read resource
@@ -591,24 +510,6 @@ public interface TestingUtils {
      */
     default String artifactFileName(TypeRef<?> type) {
         return type.getSimpleName() + ".json";
-    }
-
-    /**
-     * <p>
-     *     Get a {@link Path} pointing to the given test artifact.
-     * </p>
-     * @param suite The test suite
-     * @param testCase The test case
-     * @param artifactType The artifact type
-     * @param artifactName The artifact name
-     * @return A {@link Path} pointing to the artifact resolved from the input parameters
-     * @deprecated Prefer {@link TestingUtils#getArtifactPath(String, String, String, String)}.
-     *             Subject to removal in the next major version 2.0.0.
-     */
-    @SneakyThrows
-    @Deprecated(since = "1.4.0", forRemoval = true)
-    default Path getArtifactPath(String suite, String testCase, ArtifactType artifactType, String artifactName) {
-        return getArtifactPath(suite, testCase, artifactType.toString(), artifactName);
     }
 
     /**
