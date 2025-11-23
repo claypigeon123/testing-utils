@@ -20,12 +20,12 @@ package com.purepigeon.test.utils;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
