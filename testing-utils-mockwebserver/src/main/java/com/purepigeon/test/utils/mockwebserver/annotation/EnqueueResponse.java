@@ -79,6 +79,15 @@ public @interface EnqueueResponse {
     int status() default 200;
 
     /**
+     * <p>
+     *     Value of the Content-Type header in the response. Provide a blank string to not include a Content-Type header.
+     * </p>
+     * <p> The default is {@code application/json}. </p>
+     * @return Content type value
+     */
+    String contentType() default "application/json";
+
+    /**
      * <p> Helper annotation for repeatability. </p>
      */
     @Inherited

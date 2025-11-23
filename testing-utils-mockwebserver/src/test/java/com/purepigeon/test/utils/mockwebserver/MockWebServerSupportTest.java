@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MockWebServerSupportTest {
 
     private static final String URI = "http://localhost:{port}";
+    private static final String TEST_STRING_RESOURCE = "String.txt";
     private static final String TEST_RESPONSE_JSON = "TestResponse.json";
     private static final String TEST_ARTIFACT_TYPE = "test";
     private static final String HEADER_NAME_TEST = "X-Test";
@@ -149,6 +150,32 @@ class MockWebServerSupportTest {
 
     @Test
     @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_STRING_RESOURCE, contentType = "text/plain")
+    void enqueueInputResource_viaAnnotation_named_modContentType(String testCase) {
+        // expect
+        performGet(
+            testCase,
+            String.class,
+            HttpStatus.OK,
+            headers -> assertEquals(MediaType.TEXT_PLAIN, headers.getContentType())
+        );
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_STRING_RESOURCE, contentType = "")
+    void enqueueInputResource_viaAnnotation_named_blankContentType(String testCase) {
+        // expect
+        performGet(
+            testCase,
+            String.class,
+            HttpStatus.OK,
+            headers -> assertNull(headers.getContentType())
+        );
+    }
+
+    @Test
+    @TestCase("plain")
     @EnqueueResponse(artifactName = TEST_RESPONSE_JSON)
     @EnqueueResponse(artifactName = TEST_RESPONSE_JSON)
     void enqueueInputResource_multipleViaAnnotation_named(String testCase) {
@@ -211,6 +238,32 @@ class MockWebServerSupportTest {
     void enqueueExpectedResource_viaAnnotation_named(String testCase) {
         // expect
         performGet(testCase, TestResponse.class);
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_STRING_RESOURCE, artifactType = DefaultArtifactType.EXPECTED, contentType = "text/plain")
+    void enqueueExpectedResource_viaAnnotation_named_modContentType(String testCase) {
+        // expect
+        performGet(
+            testCase,
+            String.class,
+            HttpStatus.OK,
+            headers -> assertEquals(MediaType.TEXT_PLAIN, headers.getContentType())
+        );
+    }
+
+    @Test
+    @TestCase("plain")
+    @EnqueueResponse(artifactName = TEST_STRING_RESOURCE, artifactType = DefaultArtifactType.EXPECTED, contentType = "")
+    void enqueueExpectedResource_viaAnnotation_named_blankContentType(String testCase) {
+        // expect
+        performGet(
+            testCase,
+            String.class,
+            HttpStatus.OK,
+            headers -> assertNull(headers.getContentType())
+        );
     }
 
     @Test
@@ -347,7 +400,13 @@ class MockWebServerSupportTest {
 
         var response = builder.retrieve().toEntity(responseClass);
 
-        testingUtils.assertObject(testCase, response.getBody());
+        if (response.getBody() instanceof String stringBody) {
+            var expected = testingUtils.readExpectedString(testCase, TEST_STRING_RESOURCE);
+            assertEquals(expected, stringBody);
+        } else {
+            testingUtils.assertObject(testCase, response.getBody());
+        }
+
         assertEquals(expectedStatus, response.getStatusCode());
         assertHeaders.accept(response.getHeaders());
     }

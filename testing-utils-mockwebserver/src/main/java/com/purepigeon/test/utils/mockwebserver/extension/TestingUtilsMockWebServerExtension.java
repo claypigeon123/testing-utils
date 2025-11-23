@@ -160,12 +160,20 @@ public class TestingUtilsMockWebServerExtension implements TestInstancePostProce
                 ? mockWebServer.artifactFileName(annotation.value())
                 : annotation.artifactName();
 
+            Headers headers = Headers.EMPTY;
+
+            if (!annotation.contentType().isBlank()) {
+                headers = headers.newBuilder()
+                    .set("Content-Type", annotation.contentType())
+                    .build();
+            }
+
             mockWebServer.enqueueResource(
                 testCase,
                 annotation.artifactType(),
                 artifactName,
                 annotation.status(),
-                Headers.of("Content-Type", "application/json")
+                headers
             );
         });
     }
