@@ -26,7 +26,7 @@ import lombok.extern.jackson.Jacksonized;
 
 @Data
 @Builder
-@Jacksonized
+//@Jacksonized pending lombok alignment
 public class GenericTestResponse<T> {
     private T data;
 }
