@@ -21,10 +21,9 @@ package com.purepigeon.test.utils.test;
  */
 
 import lombok.Builder;
-import lombok.extern.jackson.Jacksonized;
 
 @Builder
-@Jacksonized
+//@Jacksonized pending lombok alignment
 public record TestData(
     String id,
     String content

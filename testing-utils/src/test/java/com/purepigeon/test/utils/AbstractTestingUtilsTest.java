@@ -30,7 +30,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -79,8 +78,11 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(ArtifactType.class)
-    void readObject(ArtifactType artifactType, String testCase) {
+    @CsvSource({
+        DefaultArtifactType.INPUT,
+        DefaultArtifactType.EXPECTED
+    })
+    void readObject(String artifactType, String testCase) {
         performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, TestData.class));
         performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, new TypeRef<>() {}));
     }
@@ -124,8 +126,11 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(ArtifactType.class)
-    void readString(ArtifactType artifactType, String testCase) {
+    @CsvSource({
+        DefaultArtifactType.INPUT,
+        DefaultArtifactType.EXPECTED
+    })
+    void readString(String artifactType, String testCase) {
         performRawReadTest(() -> testingUtils.readString(testCase, artifactType, TEST_DATA));
     }
 
