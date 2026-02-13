@@ -10,12 +10,12 @@ building / loading and assertions; focus on the core logic of the tests and keep
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils</artifactId>
-    <version>1.4.1</version>
+    <version>2.0.0-M1</version>
     <scope>test</scope>
 </dependency>
 ```
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils:1.4.1'
+testImplementation 'com.purepigeon.test:testing-utils:2.0.0-M1'
 ```
 
 ## Mock Web Server Integration
@@ -23,12 +23,12 @@ testImplementation 'com.purepigeon.test:testing-utils:1.4.1'
 <dependency>
     <groupId>com.purepigeon.test</groupId>
     <artifactId>testing-utils-mockwebserver</artifactId>
-    <version>1.4.1</version>
+    <version>2.0.0-M1</version>
     <scope>test</scope>
 </dependency>
 ```
 ```groovy
-testImplementation 'com.purepigeon.test:testing-utils-mockwebserver:1.4.1'
+testImplementation 'com.purepigeon.test:testing-utils-mockwebserver:2.0.0-M1'
 ```
 
 # Documentation
