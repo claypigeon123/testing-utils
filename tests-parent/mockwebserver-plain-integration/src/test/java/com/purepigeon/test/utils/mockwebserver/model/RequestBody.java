@@ -24,6 +24,6 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
 @Builder
-//@Jacksonized pending lombok alignment
+@Jacksonized
 public record RequestBody(String request) {
 }
