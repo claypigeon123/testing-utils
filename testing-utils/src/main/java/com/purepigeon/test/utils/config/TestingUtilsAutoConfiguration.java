@@ -25,6 +25,7 @@ import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
+import com.purepigeon.test.utils.impl.jackson2.Jackson2TestingUtils;
 import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
 import jakarta.json.bind.Jsonb;
 import lombok.AccessLevel;
@@ -34,6 +35,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
 import org.springframework.boot.jsonb.autoconfigure.JsonbAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,6 +74,16 @@ public class TestingUtilsAutoConfiguration {
     }
 
     @Configuration
+    @ConditionalOnClass(com.fasterxml.jackson.databind.ObjectMapper.class)
+    @Import(Jackson2AutoConfiguration.class)
+    public static class Jackson2Configuration {
+        @Bean
+        public TestingUtils jackson2TestingUtils(com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
+            return new Jackson2TestingUtils(objectMapper);
+        }
+    }
+
+    @Configuration
     @ConditionalOnClass(Gson.class)
     @Import(GsonAutoConfiguration.class)
     public static class GsonConfiguration {
@@ -86,7 +98,6 @@ public class TestingUtilsAutoConfiguration {
     @ConditionalOnClass(Jsonb.class)
     @ConditionalOnResource(resources = { JSONB_SPI, JSON_SPI })
     public static class JsonbConfiguration {
-
         @Bean
         public TestingUtils jsonbTestingUtils(Jsonb jsonb) {
             return new JsonbTestingUtils(jsonb);
