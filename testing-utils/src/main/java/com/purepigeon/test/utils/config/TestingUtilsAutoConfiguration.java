@@ -27,11 +27,13 @@ import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson2.Jackson2TestingUtils;
 import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
+import com.purepigeon.test.utils.impl.simple.SimpleTestingUtils;
 import jakarta.json.bind.Jsonb;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
@@ -101,6 +103,15 @@ public class TestingUtilsAutoConfiguration {
         @Bean
         public TestingUtils jsonbTestingUtils(Jsonb jsonb) {
             return new JsonbTestingUtils(jsonb);
+        }
+    }
+
+    @Configuration
+    @ConditionalOnMissingBean(TestingUtils.class)
+    public static class StandaloneConfiguration {
+        @Bean
+        public TestingUtils standaloneTestingUtils() {
+            return new SimpleTestingUtils();
         }
     }
 }

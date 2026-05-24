@@ -38,7 +38,7 @@ class GsonTestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Test
     @Override
-    public void assertImpl() {
+    protected void assertImpl() {
         assertInstanceOf(GsonTestingUtils.class, testingUtils);
     }
 }

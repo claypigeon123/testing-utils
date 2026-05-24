@@ -38,7 +38,7 @@ class Jackson2TestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Test
     @Override
-    public void assertImpl() {
+    protected void assertImpl() {
         assertInstanceOf(Jackson2TestingUtils.class, testingUtils);
     }
 }
