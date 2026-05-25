@@ -160,7 +160,7 @@ public abstract class AbstractTestingUtilsTest {
 
     @Test
     void getSuite_unset() {
-        testingUtils.setSuite(null);
+        testingUtils.setSuite("");
         assertThrows(IllegalStateException.class, () -> testingUtils.getSuite());
     }
 
