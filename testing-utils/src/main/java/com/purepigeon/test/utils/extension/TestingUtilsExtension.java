@@ -64,6 +64,8 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
      */
     public static final String TEST_CASE_ARGUMENT_NAME = "testCase";
 
+    private static final String NON_PRESERVED_PARAM_PATTERN = "^arg\\d+$";
+
     private String suite;
     private boolean usesSpring = true;
     private boolean usesFixedClock = false;
@@ -110,8 +112,13 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         Parameter parameter = parameterContext.getParameter();
+        String name = parameter.getName();
 
-        return parameter.getName().equals(TEST_CASE_ARGUMENT_NAME) && parameter.getType().equals(String.class);
+        if (name.matches(NON_PRESERVED_PARAM_PATTERN)) {
+            throw new IllegalStateException("Encountered non-preserved parameter name. Please use the '-parameters' flag for compilation / add <parameters>true</parameters> to maven-compiler-plugin configuration");
+        }
+
+        return name.equals(TEST_CASE_ARGUMENT_NAME) && parameter.getType().equals(String.class);
     }
 
     @Override
