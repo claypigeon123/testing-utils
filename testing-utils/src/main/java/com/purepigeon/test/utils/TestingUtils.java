@@ -28,6 +28,7 @@ import com.purepigeon.test.utils.impl.jackson2.Jackson2TestingUtils;
 import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
 import com.purepigeon.test.utils.impl.simple.SimpleTestingUtils;
 import lombok.SneakyThrows;
+import org.jspecify.annotations.NullMarked;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
@@ -65,6 +66,7 @@ import java.util.Objects;
  *     <li>{@link SimpleTestingUtils}</li>
  * </ul>
  */
+@NullMarked
 public interface TestingUtils {
     /**
      * <p>

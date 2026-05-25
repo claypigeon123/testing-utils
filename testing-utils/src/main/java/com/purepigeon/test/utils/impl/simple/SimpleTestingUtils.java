@@ -23,6 +23,7 @@ package com.purepigeon.test.utils.impl.simple;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * <p>
@@ -35,6 +36,7 @@ import com.purepigeon.test.utils.impl.AbstractTestingUtils;
  *     Throws {@link UnsupportedOperationException} when trying to use a method that includes mapping to / from a POJO.
  * </p>
  */
+@NullMarked
 public class SimpleTestingUtils extends AbstractTestingUtils {
 
     private static final String UNSUPPORTED_MESSAGE = "%s does not support methods that map to / from POJOs".formatted(SimpleTestingUtils.class.getSimpleName());

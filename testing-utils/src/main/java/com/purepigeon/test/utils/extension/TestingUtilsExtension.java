@@ -25,6 +25,7 @@ import com.purepigeon.test.utils.annotation.FixedClock;
 import com.purepigeon.test.utils.annotation.Suite;
 import com.purepigeon.test.utils.annotation.TestCase;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
+import org.jspecify.annotations.NullMarked;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.*;
 import org.springframework.context.ApplicationContext;
@@ -43,7 +44,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * <p>
- *     Junit 5 extension that sets the {@code suite} property in {@link TestingUtils}, resolves the {@code testCase}
+ *     JUnit 5 extension that sets the {@code suite} property in {@link TestingUtils}, resolves the {@code testCase}
  *     arguments for test methods, and handles {@link FixedClock} annotations.
  * </p>
  * <p>
@@ -57,6 +58,7 @@ import static org.mockito.Mockito.when;
  *     apply {@link WithTestingUtils} to a given test class.
  * </p>
  */
+@NullMarked
 public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeEachCallback, ParameterResolver  {
 
     /**
@@ -66,15 +68,12 @@ public class TestingUtilsExtension implements TestInstancePostProcessor, BeforeE
 
     private static final String NON_PRESERVED_PARAM_PATTERN = "^arg\\d+$";
 
-    private String suite;
+    private String suite = "";
     private boolean usesSpring = true;
     private boolean usesFixedClock = false;
 
     public static String resolveTestCase(ExtensionContext extensionContext) {
-        Optional<Method> testMethodOpt = extensionContext.getTestMethod();
-        if (testMethodOpt.isEmpty()) return null;
-
-        Method method = testMethodOpt.get();
+        Method method = extensionContext.getRequiredTestMethod();
 
         return Optional.ofNullable(method.getAnnotation(TestCase.class))
             .map(TestCase::value)

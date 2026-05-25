@@ -27,6 +27,7 @@ import com.purepigeon.test.utils.impl.AbstractTestingUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.jspecify.annotations.NullMarked;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +38,7 @@ import java.nio.file.Path;
  *     deserialization.
  * </p>
  */
+@NullMarked
 @RequiredArgsConstructor
 public class GsonTestingUtils extends AbstractTestingUtils {
 

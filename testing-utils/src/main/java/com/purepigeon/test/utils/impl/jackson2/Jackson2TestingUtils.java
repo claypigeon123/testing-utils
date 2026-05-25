@@ -27,6 +27,7 @@ import com.purepigeon.test.utils.impl.AbstractTestingUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.jspecify.annotations.NullMarked;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,8 +40,9 @@ import java.nio.file.Path;
  * @deprecated Jackson 2 support will be dropped when Spring Boot drops it.
  * @see com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils
  */
-@Deprecated(forRemoval = true, since = "2.0.0")
+@NullMarked
 @RequiredArgsConstructor
+@Deprecated(forRemoval = true, since = "2.0.0")
 public class Jackson2TestingUtils extends AbstractTestingUtils {
 
     @NonNull
