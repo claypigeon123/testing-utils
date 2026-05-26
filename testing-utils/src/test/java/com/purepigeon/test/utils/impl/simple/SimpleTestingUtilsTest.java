@@ -68,6 +68,12 @@ public class SimpleTestingUtilsTest extends AbstractTestingUtilsTest {
         assertThrows(UnsupportedOperationException.class, () -> super.genericReadTest(testCase));
     }
 
+    @Test
+    @Override
+    protected void semiGenericReadTest(String testCase) {
+        assertThrows(UnsupportedOperationException.class, () -> super.semiGenericReadTest(testCase));
+    }
+
     // --
 
     @Override

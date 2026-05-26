@@ -186,6 +186,15 @@ public abstract class AbstractTestingUtilsTest {
         testingUtils.assertObject(testCase, data);
     }
 
+    @Test
+    protected void semiGenericReadTest(String testCase) {
+        // when
+        var data = testingUtils.readInputObject(testCase, new TypeRef<TestData>() {});
+
+        // then
+        testingUtils.assertObject(testCase, data);
+    }
+
     // --
 
     protected void performReadTest(Supplier<TestData> resultSupplier) {
