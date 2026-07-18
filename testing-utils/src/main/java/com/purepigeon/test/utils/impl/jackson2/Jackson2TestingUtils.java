@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.impl.gson;
+package com.purepigeon.test.utils.impl.jackson2;
 
 /*-
  * #%L
@@ -20,7 +20,7 @@ package com.purepigeon.test.utils.impl.gson;
  * #L%
  */
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
@@ -34,46 +34,49 @@ import java.nio.file.Path;
 
 /**
  * <p>
- *     Implementation of {@link TestingUtils} that uses Google {@link Gson} for serialization and
+ *     Implementation of {@link TestingUtils} that uses the Jackson 2 {@link ObjectMapper} for serialization and
  *     deserialization.
  * </p>
+ * @deprecated Jackson 2 support will be dropped when Spring Boot drops it.
+ * @see com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils
  */
 @NullMarked
 @RequiredArgsConstructor
-public class GsonTestingUtils extends AbstractTestingUtils {
+@Deprecated(forRemoval = true, since = "2.0.0")
+public class Jackson2TestingUtils extends AbstractTestingUtils {
 
     @NonNull
-    private final Gson gson;
+    private final ObjectMapper objectMapper;
 
     @Override
     @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
         Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return gson.fromJson(Files.readString(jsonPath), returnObjectType);
+        return objectMapper.readValue(Files.readString(jsonPath), returnObjectType);
     }
 
     @Override
     @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
         Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return gson.fromJson(Files.readString(jsonPath), returnObjectType.getType());
+        return objectMapper.readValue(Files.readString(jsonPath), new Jackson2TypeRefConnector<>(returnObjectType));
     }
 
     @Override
     @SneakyThrows
     public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
-        return gson.fromJson(jsonContent, returnObjectType);
+        return objectMapper.readValue(jsonContent, returnObjectType);
     }
 
     @Override
     @SneakyThrows
     public <T> T jsonToObject(String jsonContent, TypeRef<T> returnObjectType) {
-        return gson.fromJson(jsonContent, returnObjectType.getType());
+        return objectMapper.readValue(jsonContent, new Jackson2TypeRefConnector<>(returnObjectType));
     }
 
     @Override
     @SneakyThrows
     public String objectToJson(Object object) {
-        return gson.toJson(object);
+        return objectMapper.writeValueAsString(object);
     }
 }

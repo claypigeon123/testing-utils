@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.impl.gson;
+package com.purepigeon.test.utils.impl.simple;
 
 /*-
  * #%L
@@ -9,9 +9,9 @@ package com.purepigeon.test.utils.impl.gson;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,60 +20,49 @@ package com.purepigeon.test.utils.impl.gson;
  * #L%
  */
 
-import com.google.gson.Gson;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.TypeRef;
 import com.purepigeon.test.utils.impl.AbstractTestingUtils;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.jspecify.annotations.NullMarked;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * <p>
- *     Implementation of {@link TestingUtils} that uses Google {@link Gson} for serialization and
- *     deserialization.
+ *     Implementation of {@link TestingUtils} that uses no backing json library.
+ * </p>
+ * <p>
+ *     Useful if you want to use Testing Utils just to load non POJO-mapped files (e.g. txt, csv, etc.).
+ * </p>
+ * <p>
+ *     Throws {@link UnsupportedOperationException} when trying to use a method that includes mapping to / from a POJO.
  * </p>
  */
 @NullMarked
-@RequiredArgsConstructor
-public class GsonTestingUtils extends AbstractTestingUtils {
+public class SimpleTestingUtils extends AbstractTestingUtils {
 
-    @NonNull
-    private final Gson gson;
+    private static final String UNSUPPORTED_MESSAGE = "%s does not support methods that map to / from POJOs".formatted(SimpleTestingUtils.class.getSimpleName());
 
     @Override
-    @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return gson.fromJson(Files.readString(jsonPath), returnObjectType);
+        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 
     @Override
-    @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return gson.fromJson(Files.readString(jsonPath), returnObjectType.getType());
+        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 
     @Override
-    @SneakyThrows
     public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
-        return gson.fromJson(jsonContent, returnObjectType);
+        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 
     @Override
-    @SneakyThrows
     public <T> T jsonToObject(String jsonContent, TypeRef<T> returnObjectType) {
-        return gson.fromJson(jsonContent, returnObjectType.getType());
+        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 
     @Override
-    @SneakyThrows
     public String objectToJson(Object object) {
-        return gson.toJson(object);
+        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 }

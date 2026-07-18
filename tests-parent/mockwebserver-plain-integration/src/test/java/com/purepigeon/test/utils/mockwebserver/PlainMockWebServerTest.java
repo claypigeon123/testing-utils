@@ -20,7 +20,6 @@ package com.purepigeon.test.utils.mockwebserver;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
@@ -30,6 +29,7 @@ import com.purepigeon.test.utils.mockwebserver.model.ResponseBody;
 import lombok.SneakyThrows;
 import mockwebserver3.RecordedRequest;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 import java.net.http.HttpClient;

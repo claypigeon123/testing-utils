@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.impl.gson;
+package com.purepigeon.test.utils.impl.jackson2;
 
 /*-
  * #%L
@@ -28,17 +28,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-class GsonTestingUtilsTest extends AbstractTestingUtilsTest {
+class Jackson2TestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Override
     @Autowired
-    protected void setTestingUtils(@Qualifier("gsonTestingUtils") TestingUtils testingUtils) {
+    protected void setTestingUtils(@Qualifier("jackson2TestingUtils") TestingUtils testingUtils) {
         this.testingUtils = testingUtils;
     }
 
     @Test
     @Override
     protected void assertImpl() {
-        assertInstanceOf(GsonTestingUtils.class, testingUtils);
+        assertInstanceOf(Jackson2TestingUtils.class, testingUtils);
     }
 }

@@ -38,7 +38,7 @@ class JsonbTestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Test
     @Override
-    public void assertImpl() {
+    protected void assertImpl() {
         assertInstanceOf(JsonbTestingUtils.class, testingUtils);
     }
 }

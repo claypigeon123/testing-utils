@@ -20,24 +20,30 @@ package com.purepigeon.test.utils.config;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.gson.GsonTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
+import com.purepigeon.test.utils.impl.jackson2.Jackson2TestingUtils;
 import com.purepigeon.test.utils.impl.jsonb.JsonbTestingUtils;
+import com.purepigeon.test.utils.impl.simple.SimpleTestingUtils;
 import jakarta.json.bind.Jsonb;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
+import org.springframework.boot.gson.autoconfigure.GsonAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
+import org.springframework.boot.jsonb.autoconfigure.JsonbAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * <p>
@@ -52,6 +58,7 @@ import org.springframework.context.annotation.Primary;
  * </p>
  */
 @AutoConfiguration
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestingUtilsAutoConfiguration {
 
     private static final String JSONB_SPI = "classpath:META-INF/services/jakarta.json.bind.spi.JsonbProvider";
@@ -65,6 +72,16 @@ public class TestingUtilsAutoConfiguration {
         @Primary
         public TestingUtils jacksonTestingUtils(ObjectMapper objectMapper) {
             return new JacksonTestingUtils(objectMapper);
+        }
+    }
+
+    @Configuration
+    @ConditionalOnClass(com.fasterxml.jackson.databind.ObjectMapper.class)
+    @Import(Jackson2AutoConfiguration.class)
+    public static class Jackson2Configuration {
+        @Bean
+        public TestingUtils jackson2TestingUtils(com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
+            return new Jackson2TestingUtils(objectMapper);
         }
     }
 
@@ -83,10 +100,18 @@ public class TestingUtilsAutoConfiguration {
     @ConditionalOnClass(Jsonb.class)
     @ConditionalOnResource(resources = { JSONB_SPI, JSON_SPI })
     public static class JsonbConfiguration {
-
         @Bean
         public TestingUtils jsonbTestingUtils(Jsonb jsonb) {
             return new JsonbTestingUtils(jsonb);
+        }
+    }
+
+    @Configuration
+    @ConditionalOnMissingBean(TestingUtils.class)
+    public static class StandaloneConfiguration {
+        @Bean
+        public TestingUtils standaloneTestingUtils() {
+            return new SimpleTestingUtils();
         }
     }
 }

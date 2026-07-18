@@ -30,7 +30,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,7 +51,7 @@ public abstract class AbstractTestingUtilsTest {
     protected TestingUtils testingUtils;
     protected abstract void setTestingUtils(TestingUtils testingUtils);
 
-    public abstract void assertImpl();
+    protected abstract void assertImpl();
 
     @Test
     void readInputObject_testCaseOnly(String testCase) {
@@ -79,8 +78,11 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(ArtifactType.class)
-    void readObject(ArtifactType artifactType, String testCase) {
+    @CsvSource({
+        DefaultArtifactType.INPUT,
+        DefaultArtifactType.EXPECTED
+    })
+    void readObject(String artifactType, String testCase) {
         performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, TestData.class));
         performReadTest(() -> testingUtils.readObject(testCase, artifactType, TEST_DATA, new TypeRef<>() {}));
     }
@@ -99,7 +101,7 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @Test
-    void objectToJson() {
+    protected void objectToJson() {
         performRawReadTest(() -> testingUtils.objectToJson(TestData.create()));
     }
 
@@ -124,18 +126,21 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(ArtifactType.class)
-    void readString(ArtifactType artifactType, String testCase) {
+    @CsvSource({
+        DefaultArtifactType.INPUT,
+        DefaultArtifactType.EXPECTED
+    })
+    void readString(String artifactType, String testCase) {
         performRawReadTest(() -> testingUtils.readString(testCase, artifactType, TEST_DATA));
     }
 
     @Test
-    void assertObject_testCaseOnly(String testCase) {
+    protected void assertObject_testCaseOnly(String testCase) {
         testingUtils.assertObject(testCase, TestData.create());
     }
 
     @Test
-    void assertObject_testCaseAndArtifactName(String testCase) {
+    protected void assertObject_testCaseAndArtifactName(String testCase) {
         testingUtils.assertObject(testCase, RENAMED_TEST_DATA, TestData.create());
     }
 
@@ -144,7 +149,7 @@ public abstract class AbstractTestingUtilsTest {
         "NON_EXTENSIBLE",
         "STRICT"
     })
-    void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
+    protected void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
         testingUtils.assertObject(testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
     }
 
@@ -155,7 +160,7 @@ public abstract class AbstractTestingUtilsTest {
 
     @Test
     void getSuite_unset() {
-        testingUtils.setSuite(null);
+        testingUtils.setSuite("");
         assertThrows(IllegalStateException.class, () -> testingUtils.getSuite());
     }
 
@@ -173,7 +178,7 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @Test
-    void genericReadTest(String testCase) {
+    protected void genericReadTest(String testCase) {
         // when
         var data = testingUtils.readInputObject(testCase, new TypeRef<TestDataCollection<ChildGenericTestData>>() {});
 
@@ -181,9 +186,18 @@ public abstract class AbstractTestingUtilsTest {
         testingUtils.assertObject(testCase, data);
     }
 
+    @Test
+    protected void semiGenericReadTest(String testCase) {
+        // when
+        var data = testingUtils.readInputObject(testCase, new TypeRef<TestData>() {});
+
+        // then
+        testingUtils.assertObject(testCase, data);
+    }
+
     // --
 
-    private void performReadTest(Supplier<TestData> resultSupplier) {
+    protected void performReadTest(Supplier<TestData> resultSupplier) {
         // given
         var expected = TestData.create();
 
@@ -195,7 +209,7 @@ public abstract class AbstractTestingUtilsTest {
     }
 
     @SneakyThrows
-    private void performRawReadTest(Supplier<String> resultSupplier) {
+    protected void performRawReadTest(Supplier<String> resultSupplier) {
         // given
         var expected = testingUtils.objectToJson(TestData.create());
 

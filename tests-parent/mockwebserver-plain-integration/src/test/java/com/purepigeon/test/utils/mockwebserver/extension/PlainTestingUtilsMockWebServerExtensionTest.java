@@ -20,7 +20,6 @@ package com.purepigeon.test.utils.mockwebserver.extension;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.purepigeon.test.utils.TestingUtils;
 import com.purepigeon.test.utils.annotation.WithTestingUtils;
 import com.purepigeon.test.utils.impl.jackson.JacksonTestingUtils;
@@ -32,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.engine.config.JupiterConfiguration;
 import org.junit.jupiter.engine.descriptor.JupiterEngineDescriptor;
 import org.junit.platform.testkit.engine.EngineTestKit;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectMethod;

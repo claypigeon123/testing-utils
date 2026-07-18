@@ -21,6 +21,7 @@ package com.purepigeon.test.utils.impl;
  */
 
 import com.purepigeon.test.utils.TestingUtils;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * <p>
@@ -30,18 +31,20 @@ import com.purepigeon.test.utils.TestingUtils;
  *     Classes that want to implement the {@link TestingUtils} interface should extend this class instead.
  * </p>
  */
+@NullMarked
 public abstract class AbstractTestingUtils implements TestingUtils {
 
     /**
      * <p>The current suite value.</p>
      */
-    protected String suite;
+    protected String suite = "";
 
     @Override
     public String getSuite() throws IllegalStateException {
-        if (suite == null || suite.isBlank()) {
+        if (suite.isBlank()) {
             throw new IllegalStateException("Suite property is not set");
         }
+
         return suite;
     }
 

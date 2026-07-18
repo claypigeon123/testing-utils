@@ -1,4 +1,4 @@
-package com.purepigeon.test.utils.impl.jackson;
+package com.purepigeon.test.utils.impl.jackson2;
 
 /*-
  * #%L
@@ -20,8 +20,8 @@ package com.purepigeon.test.utils.impl.jackson;
  * #L%
  */
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.purepigeon.test.utils.TypeRef;
-import tools.jackson.core.type.TypeReference;
 
 import java.lang.reflect.Type;
 
@@ -30,8 +30,11 @@ import java.lang.reflect.Type;
  *     Helper class to connect Testing utils' {@link TypeRef} to Jackson's {@link TypeReference}.
  * </p>
  * @param <T> The referenced type
+ * @deprecated Jackson 2 support will be dropped when Spring Boot drops it.
+ * @see com.purepigeon.test.utils.impl.jackson.JacksonTypeRefConnector
  */
-public class JacksonTypeRefConnector<T> extends TypeReference<T> {
+@Deprecated(forRemoval = true, since = "2.0.0")
+public class Jackson2TypeRefConnector<T> extends TypeReference<T> {
 
     private final Type type;
 
@@ -39,7 +42,7 @@ public class JacksonTypeRefConnector<T> extends TypeReference<T> {
      * <p>Construct a new instance using Testing Utils' own {@link TypeRef} class.</p>
      * @param ref The Testing Utils-provided type reference to use
      */
-    public JacksonTypeRefConnector(TypeRef<T> ref) {
+    public Jackson2TypeRefConnector(TypeRef<T> ref) {
         this.type = ref.getType();
     }
 
