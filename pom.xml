@@ -52,9 +52,10 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <revision>2.0.0-M3-SNAPSHOT</revision>
+        <revision>2.0.0</revision>
         <testing-utils.version>${revision}</testing-utils.version>
-        <skipGpg>true</skipGpg>
+        <skipGpg>false</skipGpg>
+        <skipPublishing>false</skipPublishing>
         <sourceDirectory.original>${project.basedir}/src/main/java</sourceDirectory.original>
         <sourceDirectory.delomboked>${project.build.directory}/generated-sources/delombok</sourceDirectory.delomboked>
         <sourceDirectory>${sourceDirectory.original}</sourceDirectory>
@@ -241,7 +242,7 @@
                 <version>${central-publishing-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <skipPublishing>true</skipPublishing>
+                    <skipPublishing>${skipPublishing}</skipPublishing>
                     <publishingServerId>central</publishingServerId>
                     <autoPublish>true</autoPublish>
                     <excludeArtifacts>
