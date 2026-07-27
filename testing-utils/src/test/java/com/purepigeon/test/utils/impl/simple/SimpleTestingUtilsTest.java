@@ -26,8 +26,9 @@ import com.purepigeon.test.utils.test.TestData;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import tools.jackson.databind.ObjectMapper;
@@ -66,6 +67,13 @@ public class SimpleTestingUtilsTest extends AbstractTestingUtilsTest {
         assertThrows(UnsupportedOperationException.class, () -> super.assertObject_testCaseOnly(testCase));
     }
 
+    @Override
+    @ParameterizedTest
+    @EnumSource(JSONCompareMode.class)
+    protected void assertObject_testCaseAndStrictness(JSONCompareMode strictness, String testCase) {
+        assertThrows(UnsupportedOperationException.class, () -> super.assertObject_testCaseAndStrictness(strictness, testCase));
+    }
+
     @Test
     @Override
     protected void assertObject_testCaseAndArtifactName(String testCase) {
@@ -74,11 +82,8 @@ public class SimpleTestingUtilsTest extends AbstractTestingUtilsTest {
 
     @Override
     @ParameterizedTest
-    @CsvSource({
-        "NON_EXTENSIBLE",
-        "STRICT"
-    })
-    protected void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
+    @EnumSource(JSONCompareMode.class)
+    protected void assertObject_testCaseAndArtifactNameAndStrictness(JSONCompareMode strictness, String testCase) {
         assertThrows(UnsupportedOperationException.class, () -> super.assertObject_testCaseAndArtifactNameAndStrictness(strictness, testCase));
     }
 

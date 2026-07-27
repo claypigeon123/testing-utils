@@ -30,6 +30,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -139,18 +140,21 @@ public abstract class AbstractTestingUtilsTest {
         testingUtils.assertObject(testCase, TestData.create());
     }
 
+    @ParameterizedTest
+    @EnumSource(JSONCompareMode.class)
+    protected void assertObject_testCaseAndStrictness(JSONCompareMode strictness, String testCase) {
+        testingUtils.assertObject(testCase, TestData.create(), strictness);
+    }
+
     @Test
     protected void assertObject_testCaseAndArtifactName(String testCase) {
         testingUtils.assertObject(testCase, RENAMED_TEST_DATA, TestData.create());
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "NON_EXTENSIBLE",
-        "STRICT"
-    })
-    protected void assertObject_testCaseAndArtifactNameAndStrictness(String strictness, String testCase) {
-        testingUtils.assertObject(testCase, TEST_DATA, TestData.create(), JSONCompareMode.valueOf(strictness));
+    @EnumSource(JSONCompareMode.class)
+    protected void assertObject_testCaseAndArtifactNameAndStrictness(JSONCompareMode strictness, String testCase) {
+        testingUtils.assertObject(testCase, TEST_DATA, TestData.create(), strictness);
     }
 
     @Test

@@ -425,6 +425,26 @@ public interface TestingUtils {
 
     /**
      * <p>
+     *     Asserts that the actualObject argument is equal to its corresponding test resource found in expected
+     *     resources. Infers the expected resource name from the type of the supplied object.
+     * </p>
+     * <p>
+     *     This version allows adjustment of comparison strictness.
+     * </p>
+     * <p>
+     *     For example, calling this method with an actualObject of type {@code TestRequest} would compare the given
+     *     actualObject to the test resource loaded from {@code {suite}/{testCase}/expected/TestRequest.json}.
+     * </p>
+     * @param testCase the test case, used in the path
+     * @param actualObject the actual object to compare to an expected resource
+     * @param mode to adjust comparison mode
+     */
+    default void assertObject(String testCase, Object actualObject, JSONCompareMode mode) {
+        assertObject(testCase, artifactFileName(actualObject.getClass()), actualObject, mode);
+    }
+
+    /**
+     * <p>
      *     Asserts that the actualObject argument is strictly equal to a test resource found in expected resources.
      *     Unlike some other variants, this method does not infer the expected resource name from a type, but reads
      *     {@code expectedArtifactName} directly.
