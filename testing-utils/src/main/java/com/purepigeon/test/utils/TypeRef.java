@@ -67,8 +67,17 @@ public abstract class TypeRef<T> {
         this.type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
     }
 
+    public static <T> TypeRef<T> forClass(Class<T> clazz) {
+        return new TypeRef<>() {
+            @Override
+            public Type getType() {
+                return clazz;
+            }
+        };
+    }
+
     public String getSimpleName() {
-        String[] tokens = type.getTypeName()
+        String[] tokens = getType().getTypeName()
             .replaceAll("<.*>", "")
             .split("\\.");
 

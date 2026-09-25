@@ -47,22 +47,9 @@ public class JacksonTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
-    public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return objectMapper.readValue(Files.readString(jsonPath), returnObjectType);
-    }
-
-    @Override
-    @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
         Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
         return objectMapper.readValue(Files.readString(jsonPath), new JacksonTypeRefConnector<>(returnObjectType));
-    }
-
-    @Override
-    @SneakyThrows
-    public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
-        return objectMapper.readValue(jsonContent, returnObjectType);
     }
 
     @Override

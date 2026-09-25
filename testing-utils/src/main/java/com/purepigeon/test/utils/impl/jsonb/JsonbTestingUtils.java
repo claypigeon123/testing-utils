@@ -47,21 +47,9 @@ public class JsonbTestingUtils extends AbstractTestingUtils {
 
     @Override
     @SneakyThrows
-    public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
-        Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
-        return jsonb.fromJson(Files.readString(jsonPath), returnObjectType);
-    }
-
-    @Override
-    @SneakyThrows
     public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
         Path jsonPath = getArtifactPath(getSuite(), testCase, artifactType, artifactName);
         return jsonb.fromJson(Files.readString(jsonPath), returnObjectType.getType());
-    }
-
-    @Override
-    public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
-        return jsonb.fromJson(jsonContent, returnObjectType);
     }
 
     @Override

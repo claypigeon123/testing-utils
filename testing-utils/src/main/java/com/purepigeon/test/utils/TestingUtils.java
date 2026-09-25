@@ -252,7 +252,9 @@ public interface TestingUtils {
      * @return Object, mapped from the read resource
      * @param <T> The desired type
      */
-    <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType);
+    default <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
+        return readObject(testCase, artifactType, artifactName, TypeRef.forClass(returnObjectType));
+    }
 
     /**
      * <p>
@@ -285,7 +287,9 @@ public interface TestingUtils {
      * @return the mapped object
      * @param <T> the desired target type
      */
-    <T> T jsonToObject(String jsonContent, Class<T> returnObjectType);
+    default <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
+        return jsonToObject(jsonContent, TypeRef.forClass(returnObjectType));
+    }
 
     /**
      * <p>

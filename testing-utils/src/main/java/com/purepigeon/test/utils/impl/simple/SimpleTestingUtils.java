@@ -42,17 +42,7 @@ public class SimpleTestingUtils extends AbstractTestingUtils {
     private static final String UNSUPPORTED_MESSAGE = "%s does not support methods that map to / from POJOs".formatted(SimpleTestingUtils.class.getSimpleName());
 
     @Override
-    public <T> T readObject(String testCase, String artifactType, String artifactName, Class<T> returnObjectType) {
-        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-    }
-
-    @Override
     public <T> T readObject(String testCase, String artifactType, String artifactName, TypeRef<T> returnObjectType) {
-        throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-    }
-
-    @Override
-    public <T> T jsonToObject(String jsonContent, Class<T> returnObjectType) {
         throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
     }
 
