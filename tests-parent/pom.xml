@@ -15,10 +15,15 @@
 
     <modules>
         <!-- test modules -->
+        <module>mockwebserver-plain-integration</module>
         <module>plain-integration</module>
+        <module>spring-boot-gson-integration</module>
+        <module>spring-boot-jackson2-integration</module>
+        <module>spring-boot-jackson-integration</module>
+        <module>spring-boot-jsonb-integration</module>
+        <module>spring-boot-simple-integration</module>
 
         <!-- aggregation -->
         <module>coverage-report</module>
-        <module>mockwebserver-plain-integration</module>
     </modules>
 </project>

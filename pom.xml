@@ -250,6 +250,11 @@
                         <excludeArtifact>tests-parent</excludeArtifact>
                         <excludeArtifact>plain-integration</excludeArtifact>
                         <excludeArtifact>mockwebserver-plain-integration</excludeArtifact>
+                        <excludeArtifact>spring-boot-gson-integration</excludeArtifact>
+                        <excludeArtifact>spring-boot-jackson2-integration</excludeArtifact>
+                        <excludeArtifact>spring-boot-jackson-integration</excludeArtifact>
+                        <excludeArtifact>spring-boot-jsonb-integration</excludeArtifact>
+                        <excludeArtifact>spring-boot-simple-integration</excludeArtifact>
                         <excludeArtifact>coverage-report</excludeArtifact>
                     </excludeArtifacts>
                 </configuration>

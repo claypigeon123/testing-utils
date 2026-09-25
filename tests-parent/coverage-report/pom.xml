@@ -38,6 +38,36 @@
             <version>${testing-utils.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-gson-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-jackson2-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-jackson-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-jsonb-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-simple-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
