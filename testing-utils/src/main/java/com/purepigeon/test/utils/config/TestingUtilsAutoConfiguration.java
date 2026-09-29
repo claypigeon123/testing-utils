@@ -65,7 +65,7 @@ public class TestingUtilsAutoConfiguration {
     private static final String JSON_SPI = "classpath:META-INF/services/jakarta.json.spi.JsonProvider";
 
     @Configuration
-    @ConditionalOnClass(ObjectMapper.class)
+    @ConditionalOnClass({ObjectMapper.class, JacksonAutoConfiguration.class})
     @Import(JacksonAutoConfiguration.class)
     public static class JacksonConfiguration {
         @Bean
@@ -76,7 +76,7 @@ public class TestingUtilsAutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(com.fasterxml.jackson.databind.ObjectMapper.class)
+    @ConditionalOnClass({com.fasterxml.jackson.databind.ObjectMapper.class, Jackson2AutoConfiguration.class})
     @Import(Jackson2AutoConfiguration.class)
     public static class Jackson2Configuration {
         @Bean

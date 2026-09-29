@@ -26,6 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WithTestingUtils
@@ -33,10 +35,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SimpleAutoConfigurationTest {
 
     @Autowired
-    private TestingUtils testingUtils;
+    private List<TestingUtils> testingUtilsBeans;
 
     @Test
     void assertTestingUtilsImpl() {
-        assertEquals(SimpleTestingUtils.class, testingUtils.getClass());
+        assertEquals(1, testingUtilsBeans.size());
+        assertEquals(SimpleTestingUtils.class, testingUtilsBeans.getFirst().getClass());
     }
 }

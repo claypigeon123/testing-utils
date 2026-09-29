@@ -64,6 +64,12 @@
         </dependency>
         <dependency>
             <groupId>com.purepigeon.test</groupId>
+            <artifactId>spring-boot-mixed-jackson-integration</artifactId>
+            <version>${testing-utils.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.purepigeon.test</groupId>
             <artifactId>spring-boot-simple-integration</artifactId>
             <version>${testing-utils.version}</version>
             <scope>test</scope>
