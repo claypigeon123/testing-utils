@@ -54,7 +54,7 @@ jobs:
           GPG_SIGNING_KEY: ${{secrets.GPG_SIGNING_KEY}}
 
       - name: build & deploy
-        run: mvn -B clean deploy -DskipTests=true -DskipGpg=false -Pdelombok-build
+        run: mvn -B clean deploy -DskipTests=true -DskipGpg=false -DskipPublishing=false -Pdelombok-build
         env:
           MAVEN_CENTRAL_USERNAME: ${{secrets.CENTRAL_USERNAME}}
           MAVEN_CENTRAL_PASSWORD: ${{secrets.CENTRAL_PASSWORD}}
